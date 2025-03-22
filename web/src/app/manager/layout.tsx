@@ -1,16 +1,18 @@
-import { ManagerSidebar } from "./(manager)/sidebar";
-
+import type React from "react"
+import { ManagerSidebar } from "./(manager)/sidebar"
+import { ManagerHeader } from "./(manager)/header"
 
 type ManagerLayoutProps = {
-    children: React.ReactNode;
+    children: React.ReactNode
 }
 
 export default function ManagerLayout({ children }: ManagerLayoutProps) {
     return (
         <div className="flex w-full">
             <ManagerSidebar />
-            <main className="p-4 w-full flex-1">
-                {children}
+            <main className="w-full">
+                <ManagerHeader />
+                <div className="p-4 w-full">{children}</div>
             </main>
         </div>
     )
