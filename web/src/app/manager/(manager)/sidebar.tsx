@@ -61,7 +61,7 @@ export function ManagerSidebar() {
                             </SidebarMenuItem>
                             <SidebarMenuItem>
                                 <SidebarMenuButton isActive={false} className="cursor-pointer">
-                                    <Link href="/chatbot" className="flex items-center gap-2 min-w-full">
+                                    <Link href="chatbot" className="flex items-center gap-2 min-w-full">
                                         <Bot size={20} />
                                         <span>Chat-bot</span>
                                     </Link>
@@ -75,8 +75,14 @@ export function ManagerSidebar() {
                     <SidebarGroupContent>
                         <SidebarMenu>
                             <SidebarMenuItem>
-                                <SidebarMenuButton isActive={false} className="cursor-pointer">
-                                    <Link href="/documents" className="flex items-center gap-2 min-w-full">
+                                <SidebarMenuButton 
+                                    isActive={false} 
+                                    className="cursor-pointer"
+                                >
+                                    <Link 
+                                        href="/manager/documents" 
+                                        className="flex items-center gap-2 min-w-full"
+                                    >
                                         <Folder size={20} />
                                         <span>Documentos</span>
                                     </Link>
