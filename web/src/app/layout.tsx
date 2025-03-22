@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-import faviconImage from "@/assets/icon-logo.svg"
+import faviconImage from "@/assets/brand/icon-logo.svg"
 
 export const metadata: Metadata = {
   title: "when.it",
