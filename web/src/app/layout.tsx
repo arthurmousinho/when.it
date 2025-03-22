@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import faviconImage from "@/assets/brand/icon-logo.svg"
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 export const metadata: Metadata = {
   title: "when.it",
@@ -18,7 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <SidebarProvider>
+          {children}
+        </SidebarProvider>
+      </body>
     </html>
   );
 }
