@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link";
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -13,31 +14,37 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import Link from "next/link";
+import { loginUserAction } from "./actions";
+import { toast } from "sonner"
 
-const formSchema = z.object({
+const loginSchema = z.object({
     email: z
-        .string({ message: "Email inválido" })
-        .trim()
-        .email({ message: "Email inválido" }),
+        .string({ message: 'Email é obrigatório' })
+        .email({ message: 'Email inválido' }),
     password: z
-        .string({ message: "Senha inválida" })
+        .string({ message: 'Senha é obrigatória' })
         .trim()
-        .min(6, { message: "Senha deve ter no mínimo 6 caracteres" }),
+        .min(1, { message: 'Senha é obrigatória' })
 })
+
 
 export function LoginForm() {
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const form = useForm<z.infer<typeof loginSchema>>({
+        resolver: zodResolver(loginSchema),
         defaultValues: {
             email: "",
             password: "",
         }
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
+    async function onSubmit(values: z.infer<typeof loginSchema>) {
+        const response = await loginUserAction(values);
+
+        if (response.success === false) {
+            toast.error(response.message)
+            return
+        }
     }
 
     return (

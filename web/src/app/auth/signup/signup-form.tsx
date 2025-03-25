@@ -14,23 +14,19 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import Link from "next/link";
+import { signUpUserAction } from "./actions";
+import { toast } from "sonner"
+import { loginUserAction } from "../login/actions";
 
 const formSchema = z.object({
     name: z
         .string({ message: "Nome inválido" })
         .trim()
         .min(3, { message: "Nome deve ter no mínimo 3 caracteres" }),
-    organizationName: z
-        .string({ message: "Nome da organização inválido" })
+    email: z
+        .string({ message: "Email é obrigatório" })
         .trim()
-        .min(3, { message: "Nome da organização deve ter no mínimo 3 caracteres" }),
-    organizationDomain: z
-        .string({ message: "Domínio da organização inválido" })
-        .trim()
-        .regex(
-            /^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}$/,
-            { message: "Domínio da organização inválido" }
-        ),
+        .email({ message: "Email inválido" }),
     password: z
         .string({ message: "Senha inválida" })
         .trim()
@@ -43,14 +39,24 @@ export function SignUpForm() {
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
-            organizationName: "",
-            organizationDomain: "",
+            email: "",
             password: "",
         }
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        const response = await signUpUserAction(values);
+
+        if (response.success === false) {
+            toast.error(response.message)
+            return
+        }
+
+        await loginUserAction({
+            email: values.email,
+            password: values.password
+        })
+
     }
 
     return (
@@ -66,7 +72,7 @@ export function SignUpForm() {
                             </FormLabel>
                             <FormControl>
                                 <Input
-                                    placeholder="Seu nome completo"
+                                    placeholder="John Doe"
                                     type="text"
                                     {...field}
                                 />
@@ -77,35 +83,16 @@ export function SignUpForm() {
                 />
                 <FormField
                     control={form.control}
-                    name="organizationName"
+                    name="email"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>
-                                Nome da Organização
+                                Email
                             </FormLabel>
                             <FormControl>
                                 <Input
-                                    placeholder="Nome da sua instituição"
-                                    type="text"
-                                    {...field}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="organizationDomain"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>
-                                Domínio da Organização
-                            </FormLabel>
-                            <FormControl>
-                                <Input
-                                    placeholder="escola.com"
-                                    type="text"
+                                    placeholder="johndoe@exemplo.com"
+                                    type="email"
                                     {...field}
                                 />
                             </FormControl>
