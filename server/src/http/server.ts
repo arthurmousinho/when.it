@@ -1,9 +1,12 @@
 import Fastify from 'fastify';
 import fastifyMultipart from '@fastify/multipart';
+import { fastifyJwt } from "@fastify/jwt";
+
 import { env } from '@/config/env';
 import { serializerCompiler, validatorCompiler } from "fastify-type-provider-zod";
 import { uploadDocumentRoute } from './routes/upload-document-route';
 import { signUpUserRoute } from './routes/signup-user.route';
+import { loginUserRoute } from './routes/login-user.route';
 
 export const app = Fastify({ logger: true });
 
@@ -11,8 +14,12 @@ app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 
 app.register(fastifyMultipart);
+app.register(fastifyJwt, {
+    secret: env.JWT_SECRET
+});
 
 app.register(signUpUserRoute);
+app.register(loginUserRoute);
 app.register(uploadDocumentRoute);
 
 try {

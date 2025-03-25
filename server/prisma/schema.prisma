@@ -16,40 +16,36 @@ model User {
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-
-  organizations Organization[]
+  Member    Member[]
 
   @@map("users")
+}
+
+model Member {
+  id String @id @default(uuid())
+
+  role MemberRole @default(EMPLOYEE)
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
 }
 
 model Organization {
   id String @id @default(uuid())
 
-  name   String
-  domain String @unique
+  name String
+  slug String @unique 
 
-  manager   User   @relation(fields: [managerId], references: [id])
-  managerId String @unique @map("manager_id")
-
-  employes  Employee[]
   documents Document[]
+  members   Member[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("organizations")
-}
-
-model Employee {
-  id String @id @default(uuid())
-
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String       @map("organization_id")
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@map("employees")
 }
 
 model Document {
@@ -71,6 +67,13 @@ model Document {
   organizationId String       @map("organization_id")
 
   @@map("documents")
+}
+
+enum MemberRole {
+  MANAGER
+  EMPLOYEE
+
+  @@map("member_role")
 }
 
 enum DocumentStatus {

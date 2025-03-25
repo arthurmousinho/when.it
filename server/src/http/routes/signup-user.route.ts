@@ -4,6 +4,7 @@ import { hash } from 'bcrypt';
 
 import type { FastifyInstance } from "fastify";
 import type { ZodTypeProvider } from "fastify-type-provider-zod";
+import { generateSlug } from "@/helpers/generate-slug";
 
 export function signUpUserRoute(app: FastifyInstance) {
     app
@@ -27,49 +28,64 @@ export function signUpUserRoute(app: FastifyInstance) {
                             .string({ message: 'Nome da organização é obrigatório' })
                             .trim()
                             .min(3, { message: 'Nome da organização deve ter no mínimo 3 caracteres' }),
-                        organizationDomain: z
-                            .string({ message: 'Domínio da organização é obrigatório' })
-                            .trim()
-                            .min(3, { message: 'Domínio da organização deve ter no mínimo 3 caracteres' })
-                            .regex(/^[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/, { message: 'Domínio da organização inválido' }),
                     })
                 }
             },
             async (request, reply) => {
-                const { name, email, password, organizationName, organizationDomain } = request.body;
+                const { name, email, password, organizationName } = request.body;
 
-                const newUser = await prisma.user.create({
+                const [user, organization] = await prisma.$transaction([
+                    prisma.user.create({
+                        data: {
+                            name,
+                            email,
+                            password: await hash(password, 6),
+                        }
+                    }),
+                    prisma.organization.create({
+                        data: {
+                            name: organizationName,
+                            slug: generateSlug(organizationName)
+                        }
+                    })
+                ])
+
+                const manager = await prisma.member.create({
                     data: {
-                        name,
-                        email,
-                        password: await hash(password, 6),
-                    },
-                    select: {
-                        id: true,
-                        name: true,
-                        email: true,
-                        createdAt: true,
+                        userId: user.id,
+                        organizationId: organization.id,
+                        role: 'MANAGER'
                     }
                 })
-
-                const newOrganization = await prisma.organization.create({
-                    data: {
-                        name: organizationName,
-                        domain: organizationDomain,
-                        managerId: newUser.id,
+                
+                await prisma.organization.update({
+                    where: {
+                        id: organization.id
                     },
-                    select: {
-                        id: true,
-                        name: true,
-                        domain: true,
-                        managerId: true,
-                        createdAt: true,
+                    data: {
+                        members: {
+                            connect: {
+                                id: manager.id
+                            }
+                        }
                     }
                 })
 
                 return reply.send({
-                    user: newUser,
-                    organization: newOrganization
+                    member: {
+                        id: manager.id,
+                        role: manager.role,
+                        organization: {
+                            id: organization.id,
+                            name: organization.name,
+                            slug: organization.slug
+                        },
+                        user: {
+                            id: user.id,
+                            name: user.name,
+                            email: user.email,
+                        }
+                    }
                 });
             }
         )

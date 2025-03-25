@@ -11,6 +11,7 @@ const envSchema = z.object({
     PINECONE_API_KEY: z.string(),
     OPENAI_API_KEY: z.string(),
     DATABASE_URL: z.string().url(),
+    JWT_SECRET: z.string(),
 })
 
 export const env = envSchema.parse(process.env);
