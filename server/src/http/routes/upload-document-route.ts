@@ -1,5 +1,5 @@
-import { cloudinary } from '../lib/claudinary';
-import type { FastifyInstance } from 'fastify';
+import { cloudinary } from "@/lib/claudinary";
+import type { FastifyInstance } from "fastify";
 
 const streamToBuffer = async (stream: NodeJS.ReadableStream): Promise<Buffer> => {
     const chunks: Buffer[] = [];
