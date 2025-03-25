@@ -1,8 +1,6 @@
-import dotenv from 'dotenv';
 import { Pinecone } from '@pinecone-database/pinecone';
-
-dotenv.config();
+import { env } from '@/config/env';
 
 export const pinecone = new Pinecone({
-    apiKey: process.env.PINECONE_API_KEY || '',
+    apiKey: env.PINECONE_API_KEY || '',
 });

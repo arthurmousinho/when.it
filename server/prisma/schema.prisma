@@ -8,9 +8,9 @@ datasource db {
 }
 
 model User {
-  id   String @id @default(uuid())
+  id String @id @default(uuid())
 
-  name String
+  name     String
   email    String @unique
   password String
 
@@ -34,6 +34,9 @@ model Organization {
   employes  Employee[]
   documents Document[]
 
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
   @@map("organizations")
 }
 
@@ -54,15 +57,17 @@ model Document {
 
   name        String
   description String
-  status     DocumentStatus @default(UPLOADED)
+  status      DocumentStatus @default(UPLOADED)
 
-  fileUrl String @unique @map("file_url")
-  fileId  String @unique @map("file_id")
+  fileSize Float
+  fileType DocumentType
+  fileUrl  String       @unique @map("file_url")
+  fileId   String       @unique @map("file_id")
 
   uploadedAt DateTime @default(now()) @map("uploaded_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
 
-  organizatio    Organization @relation(fields: [organizationId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String       @map("organization_id")
 
   @@map("documents")
@@ -73,4 +78,10 @@ enum DocumentStatus {
   EMBEDED
 
   @@map("document_status")
+}
+
+enum DocumentType {
+  PDF
+
+  @@map("document_type")
 }
