@@ -31,6 +31,11 @@ model Member {
 
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("members")
 }
 
 model Organization {
