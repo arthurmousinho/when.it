@@ -1,8 +1,9 @@
 'use server'
 
 import { cookies } from 'next/headers';
-import { loginUserRequest } from '@/http/user/login-user.http';
+import { loginUserRequest } from '@/http/auth/login-user.http';
 import { HTTPError } from 'ky';
+import { AUTH_TOKEN_KEY } from '../(auth)/auth';
 
 type Params = {
     email: string;
@@ -16,7 +17,7 @@ export async function loginUserAction(data: Params) {
             password: data.password
         });
 
-        (await cookies()).set('whenit_token', token, {
+        (await cookies()).set(AUTH_TOKEN_KEY, token, {
             path: '/',
             maxAge: 60 * 60 * 24, // 24 hours
         });

@@ -1,7 +1,7 @@
 'use server'
 
 import { HTTPError } from 'ky';
-import { signUpUserRequest } from '@/http/user/sign-up-user.http';
+import { signUpUserRequest } from '@/http/auth/sign-up-user.http';
 
 type Params = {
     name: string;
