@@ -14,7 +14,7 @@ export class DocumentService {
 
     public async upload(data: UploadDocumentDTO) {
 
-        const { name, description, file } = data;
+        const { name, description, file, organizationId } = data;
 
         const fileId = randomUUID();
         const fileUrl = await this.cloudinaryService.uploadFile({ file, fileId });
@@ -27,12 +27,11 @@ export class DocumentService {
                 fileUrl,
                 fileSize: file.size,
                 fileType: 'PDF',
-                organizationId: '1',
+                organizationId,
             }
         })
 
         return { document };
-
     }
 
 }

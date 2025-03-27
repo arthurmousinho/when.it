@@ -25,10 +25,6 @@ export class CloudinaryService {
                     filename_override: fileId,
                     public_id: fileId,
                     unique_filename: true,
-                    transformation: [
-                        { quality: 'auto' },
-                        { fetch_format: 'auto' },
-                    ],
                 },
                 (error, result) => {
                     if (error || !result) {
