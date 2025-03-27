@@ -1,11 +1,15 @@
 import {
     Body,
     Controller,
+    Get,
     Post,
+    UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginUserDTO } from './dtos/login-user.dto';
 import { SignUpUserDTO } from './dtos/signup-user.dto';
+import { DecodedToken } from './decoded-token.decorator';
+import { AuthGuard } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -22,6 +26,14 @@ export class AuthController {
     @Post('/signup')
     public async signup(@Body() data: SignUpUserDTO) {
         return await this.authService.signUp(data);
+    }
+
+    @UseGuards(AuthGuard)
+    @Get('/profile')
+    public async getProfile(@DecodedToken() decodedToken: DecodedToken) {
+        return await this.authService.getProfile({
+            userId: decodedToken.userId
+        });
     }
 
 }

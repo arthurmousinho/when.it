@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, UnauthorizedException } from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { compare, hash } from "bcrypt";
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from "../user/user.service";
@@ -56,6 +56,25 @@ export class AuthService {
         });
 
         return { user }
+    }
+
+    public async getProfile(data: { userId: string }) {
+        const { userId } = data;
+
+        const user = await this.userService.getById(userId);
+
+        if (!user) {
+            throw new NotFoundException('Usuário não encontrado');
+        }
+
+        return {
+            user: {
+                id: user.id,
+                name: user.name,
+                email: user.email
+            }
+        }
+        
     }
 
 }
