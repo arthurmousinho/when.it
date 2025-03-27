@@ -13,7 +13,6 @@ export class DocumentService {
     ) { }
 
     public async upload(data: UploadDocumentDTO) {
-
         const { name, description, file, organizationId } = data;
 
         const fileId = randomUUID();
@@ -30,8 +29,16 @@ export class DocumentService {
                 organizationId,
             }
         })
+        return document;
+    }
 
-        return { document };
+    public async getAllByOrganizationId(organizationId: string) {
+        const documents = await this.prismaService.document.findMany({
+            where: {
+                organizationId
+            }
+        })
+        return documents;
     }
 
 }
