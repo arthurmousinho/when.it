@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(uuid())
+
+  name     String
+  email    String @unique
+  password String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  Member    Member[]
+
+  @@map("users")
+}
+
+model Member {
+  id String @id @default(uuid())
+
+  role MemberRole @default(EMPLOYEE)
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("members")
+}
+
+model Organization {
+  id String @id @default(uuid())
+
+  name String
+  slug String @unique
+
+  documents Document[]
+  members   Member[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("organizations")
+}
+
+model Document {
+  id String @id @default(uuid())
+
+  name        String
+  description String
+  status      DocumentStatus @default(UPLOADED)
+
+  fileSize Float
+  fileType DocumentType
+  fileUrl  String       @unique @map("file_url")
+  fileId   String       @unique @map("file_id")
+
+  uploadedAt DateTime @default(now()) @map("uploaded_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String       @map("organization_id")
+
+  @@map("documents")
+}
+
+enum MemberRole {
+  MANAGER
+  EMPLOYEE
+
+  @@map("member_role")
+}
+
+enum DocumentStatus {
+  UPLOADED
+  EMBEDED
+
+  @@map("document_status")
+}
+
+enum DocumentType {
+  PDF
+
+  @@map("document_type")
+}
