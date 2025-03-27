@@ -7,8 +7,14 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { CreateOrganizationDialog } from "./create-organization-dialog"
 import { OrganizationCard } from "./organization-card"
+import { getUserOrganizations } from "@/http/organization/get-user-organizations.http"
+import { auth } from "@/app/auth/(auth)/auth"
 
-export function OrganizationsListing() {
+export async function OrganizationsListing() {
+
+    const { user } = await auth();
+    const { organizations } = await getUserOrganizations();
+
     return (
         <div className="w-full space-y-4">
             <header className="flex items-center justify-between">
@@ -52,18 +58,16 @@ export function OrganizationsListing() {
                 </div>
             </header>
             <main className="grid grid-cols-3 gap-4">
-                <OrganizationCard
-                    name={"Cody Software House"}
-                    memberCount={130}
-                />
-                <OrganizationCard
-                    name={"iCEV"}
-                    memberCount={130}
-                />
-                <OrganizationCard
-                    name={"KLAB"}
-                    memberCount={130}
-                />
+                {organizations.map(org => (
+                    <OrganizationCard
+                        key={org.id}
+                        name={org.name}
+                        membersCount={org.membersCount}
+                        documentsCount={org.documentsCount}
+                        chatsCount={org.chatsCount}
+                        isManager={org.managerId === user.id}
+                    />
+                ))}
             </main>
         </div>
     )
