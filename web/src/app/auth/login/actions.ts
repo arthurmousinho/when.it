@@ -1,7 +1,6 @@
 'use server'
 
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 import { loginUserRequest } from '@/http/user/login-user.http';
 import { HTTPError } from 'ky';
 
@@ -22,6 +21,11 @@ export async function loginUserAction(data: Params) {
             maxAge: 60 * 60 * 24, // 24 hours
         });
 
+        return {
+            message: 'Login realizado com sucesso',
+            success: true,
+        }
+
     } catch (error) {
         if (error instanceof HTTPError) {
             const { message } = await error.response.json();
@@ -36,5 +40,4 @@ export async function loginUserAction(data: Params) {
         }
     }
 
-    redirect('/');
 }

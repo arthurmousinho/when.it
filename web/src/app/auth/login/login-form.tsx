@@ -1,10 +1,10 @@
 "use client"
 
 import Link from "next/link";
-import { z } from "zod"
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
@@ -12,10 +12,12 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input"
 import { loginUserAction } from "./actions";
-import { toast } from "sonner"
+import { toast } from "sonner";
+import { useRouter } from 'next/navigation';
+import { useTransition } from "react";
 
 const loginSchema = z.object({
     email: z
@@ -30,6 +32,10 @@ const loginSchema = z.object({
 
 export function LoginForm() {
 
+    const router = useRouter();
+
+    const [isLoading, startTransition] = useTransition();
+
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -38,13 +44,15 @@ export function LoginForm() {
         }
     })
 
-    async function onSubmit(values: z.infer<typeof loginSchema>) {
-        const response = await loginUserAction(values);
-
-        if (response.success === false) {
-            toast.error(response.message)
-            return
-        }
+    function onSubmit(values: z.infer<typeof loginSchema>) {
+        startTransition(async () => {
+            const response = await loginUserAction(values)
+            if (response.success === false) {
+                toast.error(response.message)
+                return
+            }
+            router.push('/manager');
+        })
     }
 
     return (
@@ -95,7 +103,7 @@ export function LoginForm() {
                     >
                         Não tem uma conta? Cadastre-se
                     </Link>
-                    <Button type="submit">
+                    <Button type="submit" isLoading={isLoading}>
                         Entrar
                     </Button>
                 </footer>

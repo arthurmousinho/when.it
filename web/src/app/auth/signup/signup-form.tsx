@@ -17,6 +17,8 @@ import Link from "next/link";
 import { signUpUserAction } from "./actions";
 import { toast } from "sonner"
 import { loginUserAction } from "../login/actions";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 
 const formSchema = z.object({
     name: z
@@ -35,6 +37,10 @@ const formSchema = z.object({
 
 export function SignUpForm() {
 
+    const router = useRouter();
+
+    const [isLoading, startTransition] = useTransition();
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -44,19 +50,22 @@ export function SignUpForm() {
         }
     })
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
-        const response = await signUpUserAction(values);
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        startTransition(async () => {
+            const response = await signUpUserAction(values);
 
-        if (response.success === false) {
-            toast.error(response.message)
-            return
-        }
+            if (response.success === false) {
+                toast.error(response.message)
+                return
+            }
 
-        await loginUserAction({
-            email: values.email,
-            password: values.password
+            await loginUserAction({
+                email: values.email,
+                password: values.password
+            });
+
+            router.push("/manager");
         })
-
     }
 
     return (
@@ -126,7 +135,7 @@ export function SignUpForm() {
                     >
                         Já tem uma conta? Faça login
                     </Link>
-                    <Button type="submit">
+                    <Button type="submit" isLoading={isLoading}>
                         Criar conta
                     </Button>
                 </footer>
