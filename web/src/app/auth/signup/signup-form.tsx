@@ -64,7 +64,7 @@ export function SignUpForm() {
                 password: values.password
             });
 
-            router.push("/manager");
+            router.push("/orgs");
         })
     }
 

@@ -51,7 +51,7 @@ export function LoginForm() {
                 toast.error(response.message)
                 return
             }
-            router.push('/manager');
+            router.push('/orgs');
         })
     }
 
