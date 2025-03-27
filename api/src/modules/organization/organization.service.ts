@@ -48,4 +48,43 @@ export class OrganizationService {
         return { organization };
     }
 
+    public async getAllByUserId(userId: string) {
+        const organizations = await this.prismaService.organization.findMany({
+            where: {
+                members: {
+                    some: {
+                        userId,
+                    },
+                },
+            },
+            include: {
+                _count: {
+                    select: {
+                        members: true,
+                        documents: true,
+                        chats: true
+                    },
+                },
+                members: {
+                    where: {
+                        userId,
+                    },
+                    select: {
+                        id: true
+                    },
+                }
+            }
+        });
+
+        return organizations.map(org => ({
+            id:  org.id,
+            name: org.name,
+            slug: org.slug,
+            membersCount: org._count.members,
+            documentsCount: org._count.documents,
+            chatsCount: org._count.chats,
+            managerId: org.members[0].id,
+        }));
+    }
+
 }

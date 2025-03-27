@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
 import { CreateOrganizationDTO } from "./dtos/create-organization.dto";
 import { OrganizationService } from "./organization.service";
 import { AuthGuard } from "../auth/auth.guard";
@@ -21,6 +21,14 @@ export class OrganizationController {
             name: data.name,
             managerId: decodedToken.userId
         });
+    }
+
+    @Get('')
+    public async getAllByUserId(
+        @DecodedToken() decodedToken: DecodedToken
+    ) {
+        const organizations = await this.organizationService.getAllByUserId(decodedToken.userId);
+        return { organizations };
     }
 
 }
