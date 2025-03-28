@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers';
 import { loginUserRequest } from '@/http/auth/login-user.http';
 import { HTTPError } from 'ky';
-import { AUTH_TOKEN_KEY } from '../(auth)/auth';
+import { AUTH_TOKEN_KEY } from '@/constants/auth-token-key';
 
 type Params = {
     email: string;

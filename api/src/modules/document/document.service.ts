@@ -32,10 +32,12 @@ export class DocumentService {
         return document;
     }
 
-    public async getAllByOrganizationId(organizationId: string) {
+    public async getByOrganization(organizationSlug: string) {
         const documents = await this.prismaService.document.findMany({
             where: {
-                organizationId
+                organization: {
+                    slug: organizationSlug
+                }
             }
         })
         return documents;

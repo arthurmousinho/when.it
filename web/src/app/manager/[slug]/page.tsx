@@ -1,11 +1,10 @@
-'use client'
+type Props = {
+    params: {
+        slug: string;
+    }
+}
 
-import { useParams } from "next/navigation";
-
-export default function OrganizationDashboard() {
-
-    const { slug } = useParams();
-
+export default function OrganizationDashboard({ params: { slug } }: Props) {
     return (
         <div>
             <h1>Organization Dashboard</h1>

@@ -26,9 +26,11 @@ export class DocumentController {
         return { document };
     }
 
-    @Get(':organizationId')
-    public async getAllByOrganizationId(@Param('organizationId') organizationId: string) {
-        const documents = await this.documentService.getAllByOrganizationId(organizationId);
+    @Get('organization/:organizationSlug')
+    public async getOrganizationDocuments(
+        @Param('organizationSlug') organizationSlug: string
+    ) {
+        const documents = await this.documentService.getByOrganization(organizationSlug);
         return { documents };
     }
 
