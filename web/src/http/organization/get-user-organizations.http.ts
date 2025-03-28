@@ -8,7 +8,12 @@ type Response = {
         membersCount: number;
         documentsCount: number;
         chatsCount: number;
-        managerId: string;
+        manager: {
+            user: {
+                id: string;
+                name: string;
+            }
+        };
     }[]
 }
 

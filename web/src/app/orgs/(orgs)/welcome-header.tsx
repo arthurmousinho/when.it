@@ -6,7 +6,7 @@ export function WelcomeHeader() {
     return (
         <header className="border-b p-4 px-10">
             <div className="flex items-center justify-between">
-                <Image src={logo} alt="Logo" width={150} height={50} />
+                <Image src={logo} alt="when.it" width={150} height={50} />
                 <ProfileButton />
             </div>
         </header>

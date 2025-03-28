@@ -1,7 +1,7 @@
 import { WelcomeHeader } from "./(orgs)/welcome-header";
-import { OrganizationsListing } from "./(orgs)/organizarions-listing";
+import { OrganizationsListing } from "./(orgs)/organizations-listing";
 
-export default function OrganizationsPage() {
+export default async function OrganizationsPage() {
     return (
         <div className="w-full">
             <WelcomeHeader />

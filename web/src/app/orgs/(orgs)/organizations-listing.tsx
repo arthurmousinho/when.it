@@ -5,10 +5,10 @@ import {
     Filter,
 } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { CreateOrganizationDialog } from "./create-organization-dialog"
 import { OrganizationCard } from "./organization-card"
 import { getUserOrganizations } from "@/http/organization/get-user-organizations.http"
 import { auth } from "@/app/auth/(auth)/auth"
+import { CreateOrganizationDialog } from "./create-organization-dialog"
 
 export async function OrganizationsListing() {
 
@@ -22,7 +22,9 @@ export async function OrganizationsListing() {
                     <h2 className="text-3xl font-bold tracking-tight">
                         Organizações
                     </h2>
-                    <p className="text-muted-foreground">Gerencie todos os documentos da sua instituição.</p>
+                    <p className="text-muted-foreground">
+                        Gerencie todos os documentos da sua instituição.
+                    </p>
                 </div>
                 <CreateOrganizationDialog />
             </header>
@@ -65,7 +67,7 @@ export async function OrganizationsListing() {
                         membersCount={org.membersCount}
                         documentsCount={org.documentsCount}
                         chatsCount={org.chatsCount}
-                        isManager={org.managerId === user.id}
+                        isManager={org.manager.user.id === user.id}
                     />
                 ))}
             </main>

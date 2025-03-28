@@ -21,7 +21,7 @@ export class OrganizationService {
         }
 
         const slug = name.toLowerCase().replace(/ /g, '-');
-        
+
         const organizationAlreadyExistsWithSlug = await this.prismaService.organization.findUnique({
             where: {
                 slug,
@@ -70,20 +70,25 @@ export class OrganizationService {
                         userId,
                     },
                     select: {
-                        id: true
+                        user: {
+                            select: {
+                                id: true,
+                                name: true,
+                            }
+                        }
                     },
                 }
             }
         });
 
         return organizations.map(org => ({
-            id:  org.id,
+            id: org.id,
             name: org.name,
             slug: org.slug,
             membersCount: org._count.members,
             documentsCount: org._count.documents,
             chatsCount: org._count.chats,
-            managerId: org.members[0].id,
+            manager: org.members[0],
         }));
     }
 
