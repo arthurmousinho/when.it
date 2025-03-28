@@ -1,7 +1,7 @@
 import ky from 'ky';
 import { env } from './env.config';
 import { getCookie } from 'cookies-next'
-import { AUTH_TOKEN_KEY } from '@/app/auth/(auth)/auth';
+import { AUTH_TOKEN_KEY } from '@/constants/auth-token-key';
 
 export const api = ky.create({
     prefixUrl: env.NEXT_PUBLIC_API_URL,

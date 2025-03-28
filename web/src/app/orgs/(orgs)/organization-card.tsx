@@ -1,23 +1,28 @@
-import { Bot, Folder, UsersRound, ArrowRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import Link from "next/link";
+import { Bot, Folder, UsersRound, ArrowRight } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 type OrganizationCardProps = {
-    name: string
-    membersCount: number
-    isManager: boolean
-    chatsCount: number
-    documentsCount: number
+    name: string;
+    slug: string;
+    membersCount: number;
+    isManager: boolean;
+    chatsCount: number;
+    documentsCount: number;
 }
 
 export function OrganizationCard({
     name,
+    slug,
     isManager,
     membersCount,
     chatsCount,
     documentsCount,
 }: OrganizationCardProps) {
+
     return (
         <Card className="w-full overflow-hidden transition-all duration-200 gap-4">
             <CardHeader>
@@ -59,15 +64,19 @@ export function OrganizationCard({
                 </div>
             </CardContent>
             <CardFooter>
-                <Button
-                    className="w-full transition-colors hover:bg-primary hover:text-slate-50 group"
-                    size="sm"
-                    variant="secondary"
+                <Link
+                    href={isManager ? `/manager/${slug}` : `/member/${slug}`}
+                    type="submit"
+                    className={cn(buttonVariants({
+                        variant: "secondary",
+                        size: "sm",
+                        className: "w-full transition-colors hover:bg-primary hover:text-slate-50 group"
+                    }))}
                 >
                     Acessar
                     <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Button>
+                </Link>
             </CardFooter>
-        </Card>
+        </Card >
     )
 }

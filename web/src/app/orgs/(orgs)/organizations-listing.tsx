@@ -64,6 +64,7 @@ export async function OrganizationsListing() {
                     <OrganizationCard
                         key={org.id}
                         name={org.name}
+                        slug={org.slug}
                         membersCount={org.membersCount}
                         documentsCount={org.documentsCount}
                         chatsCount={org.chatsCount}

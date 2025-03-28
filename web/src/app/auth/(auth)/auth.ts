@@ -1,8 +1,9 @@
+'use server'
+
+import { AUTH_TOKEN_KEY } from "@/constants/auth-token-key";
 import { getUserProfile } from "@/http/auth/get-user-profile.http";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-
-export const AUTH_TOKEN_KEY = 'whenit_token';
 
 export async function isAuthenticated() {
     const token = (await cookies()).get(AUTH_TOKEN_KEY)?.value;
