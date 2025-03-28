@@ -92,4 +92,18 @@ export class OrganizationService {
         }));
     }
 
+    public async getBySlug(slug: string) {
+        const organization = await this.prismaService.organization.findUnique({
+            where: {
+                slug
+            }
+        })
+
+        if (!organization) {
+            return null;
+        }
+
+        return organization;
+    }
+
 }

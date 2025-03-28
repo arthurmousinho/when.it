@@ -17,6 +17,9 @@ import { OrganizationService } from './organization.service';
     PrismaService,
     OrganizationService
   ],
+  exports: [
+    OrganizationService
+  ]
 })
 
 export class OrganizationModule { }

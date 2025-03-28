@@ -21,10 +21,10 @@ import {
     File
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { CreateDocumentForm } from "./create-document-form";
+import { UploadDocumentForm } from "./upload-document-form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { DocumentType } from "@/@types/document";
-import { getOrganizationDocuments } from "@/http/documents/get-organization-documents";
+import { getOrganizationDocuments } from "@/http/documents/get-organization-documents.http";
 import { formatBytes, formatDate } from "@/lib/utils";
 import Link from "next/link";
 
@@ -54,7 +54,7 @@ export default async function DocumentsPage({ params: { slug } }: Props) {
                     <h2 className="text-3xl font-bold tracking-tight">Documentos</h2>
                     <p className="text-muted-foreground">Gerencie todos os documentos da sua instituição.</p>
                 </div>
-                <CreateDocumentForm />
+                <UploadDocumentForm />
             </header>
             <header className="flex flex-col gap-4 md:flex-row md:items-center w-full">
                 <div className="relative flex-1">

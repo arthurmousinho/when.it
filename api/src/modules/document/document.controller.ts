@@ -19,10 +19,16 @@ export class DocumentController {
         private readonly documentService: DocumentService
     ) { }
 
-    @Post('upload')
+    @Post('organization/:organizationSlug/upload')
     @FormDataRequest()
-    public async upload(@Body() data: UploadDocumentDTO) {
-        const document = await this.documentService.upload(data);
+    public async upload(
+        @Body() data: UploadDocumentDTO,
+        @Param('organizationSlug') organizationSlug: string
+    ) {
+        const document = await this.documentService.upload({
+            ...data,
+            organizationSlug,
+        });
         return { document };
     }
 

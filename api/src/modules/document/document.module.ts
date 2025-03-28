@@ -5,10 +5,12 @@ import { DocumentService } from './document.service';
 import { PineconeService } from './infra/pinecone.service';
 import { DocumentController } from './document.controller';
 import { NestjsFormDataModule } from 'nestjs-form-data';
+import { OrganizationModule } from '../organization/organization.module';
 
 @Module({
   imports: [
-    NestjsFormDataModule
+    NestjsFormDataModule,
+    OrganizationModule
   ],
   controllers: [
     DocumentController

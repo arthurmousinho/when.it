@@ -21,9 +21,4 @@ export class UploadDocumentDTO {
     @HasMimeType(['application/pdf'], { message: 'Arquivo do documento deve ser um PDF' })
     file: Express.Multer.File;
 
-    @IsNotEmpty({ message: 'ID da organização é obrigatório' })
-    @IsString({ message: 'ID da organização deve ser uma string' })
-    @IsUUID(4, { message: 'ID da organização deve ser um UUID válido' })
-    organizationId: string;
-
 }

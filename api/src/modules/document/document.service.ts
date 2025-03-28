@@ -1,7 +1,8 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "src/database/prisma.service";
 import { CloudinaryService } from "./infra/claudinary.service";
 import { randomUUID } from "node:crypto";
+import { OrganizationService } from "../organization/organization.service";
 import type { UploadDocumentDTO } from "./dtos/upload-document.dto";
 
 @Injectable()
@@ -9,11 +10,17 @@ export class DocumentService {
 
     constructor(
         private readonly prismaService: PrismaService,
-        private readonly cloudinaryService: CloudinaryService
+        private readonly cloudinaryService: CloudinaryService,
+        private readonly organizationService: OrganizationService
     ) { }
 
-    public async upload(data: UploadDocumentDTO) {
-        const { name, description, file, organizationId } = data;
+    public async upload(data: UploadDocumentDTO & { organizationSlug: string }) {
+        const { name, description, file, organizationSlug } = data;
+
+        const organization = await this.organizationService.getBySlug(organizationSlug);
+        if (!organization) {
+            throw new NotFoundException('Organização não encontrada');
+        }
 
         const fileId = randomUUID();
         const fileUrl = await this.cloudinaryService.uploadFile({ file, fileId });
@@ -26,9 +33,10 @@ export class DocumentService {
                 fileUrl,
                 fileSize: file.size,
                 fileType: 'PDF',
-                organizationId,
+                organizationId: organization.id,
             }
-        })
+        });
+
         return document;
     }
 
@@ -38,6 +46,9 @@ export class DocumentService {
                 organization: {
                     slug: organizationSlug
                 }
+            },
+            orderBy: {
+                uploadedAt: 'desc'
             }
         })
         return documents;
