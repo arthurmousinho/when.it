@@ -8,16 +8,7 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { LogOut, Settings, UserRound } from "lucide-react";
 import { auth } from "./auth";
-
-function getInitials(name: string): string {
-    const initials = name
-        .split(' ')
-        .map((word) => word.charAt(0).toUpperCase())
-        .slice(0, 2)
-        .join('')
-
-    return initials
-}
+import { getInitials } from "@/lib/utils";
 
 export async function ProfileButton() {
 

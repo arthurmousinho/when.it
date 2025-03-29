@@ -52,7 +52,7 @@ export default async function DocumentsPage({ params: { slug } }: Props) {
             <header className="flex items-center justify-between">
                 <div>
                     <h2 className="text-3xl font-bold tracking-tight">Documentos</h2>
-                    <p className="text-muted-foreground">Gerencie todos os documentos da sua instituição.</p>
+                    <p className="text-muted-foreground">Gerencie todos os documentos da sua organização.</p>
                 </div>
                 <UploadDocumentForm />
             </header>
@@ -172,4 +172,3 @@ export default async function DocumentsPage({ params: { slug } }: Props) {
         </div>
     )
 }
-

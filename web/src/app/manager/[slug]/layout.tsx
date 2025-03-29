@@ -15,7 +15,9 @@ export default function ManagerLayout({ children, params: { slug } }: ManagerLay
             <ManagerSidebar slug={slug} />
             <main className="w-full h-full">
                 <ManagerHeader />
-                {children}
+                <div className="p-4">
+                    {children}
+                </div>
             </main>
         </div>
     )

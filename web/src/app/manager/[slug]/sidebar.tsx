@@ -2,6 +2,7 @@ import {
     Gauge,
     Bot,
     Folder,
+    UsersRound,
 } from "lucide-react"
 import {
     Sidebar,
@@ -26,12 +27,9 @@ export function ManagerSidebar({ slug }: Props) {
         <Sidebar>
             <SidebarContent className="py-4">
                 <header className="w-full px-4">
-                    <Image
-                        src={logo}
-                        alt="when.it"
-                        width={150}
-                        height={50}
-                    />
+                    <Link href="/orgs" className="cursor pointer">
+                        <Image src={logo} alt="when.it" width={150} height={50} />
+                    </Link>
                 </header>
                 <SidebarGroup>
                     <SidebarGroupLabel>
@@ -52,7 +50,7 @@ export function ManagerSidebar({ slug }: Props) {
                             </SidebarMenuItem>
                             <SidebarMenuItem>
                                 <SidebarMenuButton isActive={false} className="cursor-pointer">
-                                    <Link 
+                                    <Link
                                         href={`/manager/${slug}/chatbot`}
                                         className="flex items-center gap-2 min-w-full"
                                     >
@@ -72,6 +70,20 @@ export function ManagerSidebar({ slug }: Props) {
                                     >
                                         <Folder size={20} />
                                         <span>Documentos</span>
+                                    </Link>
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
+                            <SidebarMenuItem>
+                                <SidebarMenuButton
+                                    isActive={false}
+                                    className="cursor-pointer"
+                                >
+                                    <Link
+                                        href={`/manager/${slug}/members`}
+                                        className="flex items-center gap-2 min-w-full"
+                                    >
+                                        <UsersRound size={20} />
+                                        <span>Membros</span>
                                     </Link>
                                 </SidebarMenuButton>
                             </SidebarMenuItem>
