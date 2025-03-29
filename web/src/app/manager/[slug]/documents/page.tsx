@@ -31,9 +31,9 @@ import Link from "next/link";
 function getFileIcon(type: DocumentType) {
     switch (type) {
         case "PDF":
-            return <FileText className="size-6 text-muted-foreground" />
+            return <FileText className="size-6 text-primary" />
         default:
-            return <File className="size-6 text-muted-foreground" />
+            return <File className="size-6 text-primary" />
     }
 }
 
@@ -104,7 +104,9 @@ export default async function DocumentsPage({ params: { slug } }: Props) {
                                 <TableRow key={index}>
                                     <TableCell className="font-medium py-4">
                                         <div className="flex items-center gap-2">
-                                            {getFileIcon(doc.fileType)}
+                                            <div className="border p-3 rounded-md">
+                                                {getFileIcon(doc.fileType)}
+                                            </div>
                                             <div>
                                                 <span>
                                                     {doc.name}
