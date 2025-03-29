@@ -14,9 +14,10 @@ model User {
   email    String @unique
   password String
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  Member    Member[]
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  memberships Member[]
+  invites     Invite[]
 
   @@map("users")
 }
@@ -24,7 +25,7 @@ model User {
 model Member {
   id String @id @default(uuid())
 
-  role  MemberRole @default(EMPLOYEE)
+  role  MemberRole @default(MEMBER)
   chats Chat[]
 
   user   User   @relation(fields: [userId], references: [id])
@@ -47,10 +48,11 @@ model Organization {
 
   documents Document[]
   members   Member[]
-  chats      Chat[]
+  chats     Chat[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+  invites   Invite[]
 
   @@map("organizations")
 }
@@ -74,6 +76,23 @@ model Document {
   organizationId String       @map("organization_id")
 
   @@map("documents")
+}
+
+model Invite {
+  id String @id @default(uuid())
+
+  email String     @unique
+  role  MemberRole @default(MEMBER)
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String @map("author_id")
+
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String       @map("organization_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("invites")
 }
 
 model Chat {
@@ -106,7 +125,7 @@ model Message {
 
 enum MemberRole {
   MANAGER
-  EMPLOYEE
+  MEMBER
 
   @@map("member_role")
 }
