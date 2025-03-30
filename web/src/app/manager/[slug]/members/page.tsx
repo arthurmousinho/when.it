@@ -4,7 +4,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import {
     Search,
     Filter,
-    UserRoundPlus,
     X,
     MoreVertical,
     UserRound
@@ -14,6 +13,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { getOrganizationMembers } from "@/http/member/get-organization-members.http";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { MemberRoleBadge } from "@/components/member-role-badge";
+import { InviteMemberForm } from "./invite-member-form";
+import { InviteMemberDialog } from "./invite-member-dialog";
 
 type Props = {
     params: {
@@ -32,10 +33,7 @@ export default async function MembersPage({ params: { slug } }: Props) {
                     <h2 className="text-3xl font-bold tracking-tight">Membros</h2>
                     <p className="text-muted-foreground">Gerencie todos os membros da sua organização.</p>
                 </div>
-                <Button>
-                    <UserRoundPlus size={20} />
-                    Convidar membro
-                </Button>
+                <InviteMemberDialog />
             </header>
             <header className="flex flex-col gap-4 md:flex-row md:items-center w-full">
                 <div className="relative flex-1">

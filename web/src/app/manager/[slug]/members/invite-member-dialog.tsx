@@ -7,25 +7,24 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import { HousePlus } from "lucide-react"
-import { OrganizationForm } from "./organization-form"
+import { UserRoundPlus } from "lucide-react"
+import { InviteMemberForm } from "./invite-member-form"
 
-export function CreateOrganizationDialog() {
-
+export function InviteMemberDialog() {
     return (
         <Dialog>
             <DialogTrigger asChild>
                 <Button>
-                    <HousePlus className="mr-2 h-4 w-4" />
-                    Adicionar Organização
+                    <UserRoundPlus className="mr-2 size-4" />
+                    Convidar Membro
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[600px]">
                 <DialogHeader>
-                    <DialogTitle>Adicionar Nova Organização</DialogTitle>
+                    <DialogTitle>Convidar Membro</DialogTitle>
                     <DialogDescription>Preencha as informações abaixo</DialogDescription>
                 </DialogHeader>
-                <OrganizationForm />
+                <InviteMemberForm />
             </DialogContent>
         </Dialog>
     )
