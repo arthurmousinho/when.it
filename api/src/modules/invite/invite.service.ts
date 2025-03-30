@@ -53,4 +53,20 @@ export class InviteService {
         return invite;
     }
 
+    public async getOrganizationInvites(organizationSlug: string) {
+        const org = await this.organizationService.getBySlug(organizationSlug);
+
+        if (!org) {
+            throw new NotFoundException('Organização não encontrada');
+        }
+
+        const invites = await this.prismaService.invite.findMany({
+            where: {
+                organizationId: org.id
+            }
+        });
+
+        return invites;
+    }
+
 }

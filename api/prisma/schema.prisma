@@ -90,7 +90,7 @@ model Invite {
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String       @map("organization_id")
 
-  createdAt DateTime @default(now()) @map("created_at")
+  sentAt DateTime @default(now()) @map("sent_at")
 
   @@map("invites")
 }

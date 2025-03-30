@@ -12,7 +12,7 @@ type Response = {
     role: string;
     authorId: string;
     organizationId: string;
-    createdAt: string;
+    sentAt: string;
 }
 
 export async function sendOrganizationInvite(organizationSlug: string, payload: Payload) {

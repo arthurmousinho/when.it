@@ -3,6 +3,7 @@ import {
     Bot,
     Folder,
     UsersRound,
+    Mail,
 } from "lucide-react"
 import {
     Sidebar,
@@ -23,6 +24,35 @@ type Props = {
 }
 
 export function ManagerSidebar({ slug }: Props) {
+
+    const links = [
+        {
+            href: `/manager/${slug}`,
+            label: "Dashboard",
+            icon: <Gauge size={20} />,
+        },
+        {
+            href: `/manager/${slug}/chatbot`,
+            label: "Chatbot",
+            icon: <Bot size={20} />,
+        },
+        {
+            href: `/manager/${slug}/documents`,
+            label: "Documentos",
+            icon: <Folder size={20} />,
+        },
+        {
+            href: `/manager/${slug}/members`,
+            label: "Membros",
+            icon: <UsersRound size={20} />,
+        },
+        {
+            href: `/manager/${slug}/invites`,
+            label: "Convites",
+            icon: <Mail size={20} />,
+        },
+    ]
+
     return (
         <Sidebar>
             <SidebarContent className="py-4">
@@ -37,56 +67,19 @@ export function ManagerSidebar({ slug }: Props) {
                     </SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            <SidebarMenuItem>
-                                <SidebarMenuButton isActive={false} className="cursor-pointer">
-                                    <Link
-                                        href={`/manager/${slug}`}
-                                        className="flex items-center gap-2 min-w-full"
-                                    >
-                                        <Gauge size={20} />
-                                        <span>Dashboard</span>
-                                    </Link>
-                                </SidebarMenuButton>
-                            </SidebarMenuItem>
-                            <SidebarMenuItem>
-                                <SidebarMenuButton isActive={false} className="cursor-pointer">
-                                    <Link
-                                        href={`/manager/${slug}/chatbot`}
-                                        className="flex items-center gap-2 min-w-full"
-                                    >
-                                        <Bot size={20} />
-                                        <span>Chat-bot</span>
-                                    </Link>
-                                </SidebarMenuButton>
-                            </SidebarMenuItem>
-                            <SidebarMenuItem>
-                                <SidebarMenuButton
-                                    isActive={false}
-                                    className="cursor-pointer"
-                                >
-                                    <Link
-                                        href={`/manager/${slug}/documents`}
-                                        className="flex items-center gap-2 min-w-full"
-                                    >
-                                        <Folder size={20} />
-                                        <span>Documentos</span>
-                                    </Link>
-                                </SidebarMenuButton>
-                            </SidebarMenuItem>
-                            <SidebarMenuItem>
-                                <SidebarMenuButton
-                                    isActive={false}
-                                    className="cursor-pointer"
-                                >
-                                    <Link
-                                        href={`/manager/${slug}/members`}
-                                        className="flex items-center gap-2 min-w-full"
-                                    >
-                                        <UsersRound size={20} />
-                                        <span>Membros</span>
-                                    </Link>
-                                </SidebarMenuButton>
-                            </SidebarMenuItem>
+                            {links.map((link) => (
+                                <SidebarMenuItem>
+                                    <SidebarMenuButton isActive={false} className="cursor-pointer">
+                                        <Link
+                                            href={link.href}
+                                            className="flex items-center gap-2 min-w-full"
+                                        >
+                                            {link.icon}
+                                            {link.label}
+                                        </Link>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                            ))}
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>

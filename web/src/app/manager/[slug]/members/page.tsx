@@ -13,7 +13,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { getOrganizationMembers } from "@/http/member/get-organization-members.http";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { MemberRoleBadge } from "@/components/member-role-badge";
-import { InviteMemberForm } from "./invite-member-form";
 import { InviteMemberDialog } from "./invite-member-dialog";
 
 type Props = {

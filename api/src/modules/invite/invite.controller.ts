@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
 import { InviteService } from "./invite.service";
 import { CreateInviteDTO } from "./dtos/create-invite.dto";
 import { DecodedToken } from "../auth/decoded-token.decorator";
@@ -24,6 +24,14 @@ export class InviteController {
             userId: decodedToken.userId
         });
         return { invite }
+    }
+
+    @Get('/organization/:organizationSlug') 
+    public async getOrganizationInvites(
+        @Param('organizationSlug') organizationSlug: string
+    ) {
+        const invites = await this.inviteService.getOrganizationInvites(organizationSlug);
+        return { invites }
     }
 
 }
