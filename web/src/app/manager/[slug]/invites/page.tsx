@@ -10,6 +10,7 @@ import { formatDate } from "@/lib/utils";
 import { MemberRoleBadge } from "@/components/member-role-badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { InviteMemberDialog } from "../members/invite-member-dialog";
+import { InviteStatusBadge } from "./invite-status-badge";
 
 type Props = {
     params: {
@@ -38,19 +39,25 @@ export default async function InvitesPage({ params: { slug } }: Props) {
                                 <TableHead>Email</TableHead>
                                 <TableHead>Cargo</TableHead>
                                 <TableHead>Data de Envio</TableHead>
+                                <TableHead>Status</TableHead>
                                 <TableHead className="text-right">Ações</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {invites.map(invites => (
-                                <TableRow key={invites.id}>
-                                    <TableCell>{invites.email}</TableCell>
+                            {invites.map(invite => (
+                                <TableRow key={invite.id}>
+                                    <TableCell>{invite.email}</TableCell>
                                     <TableCell>
                                         <MemberRoleBadge
-                                            role={invites.role}
+                                            role={invite.role}
                                         />
                                     </TableCell>
-                                    <TableCell>{formatDate(invites.sentAt)}</TableCell>
+                                    <TableCell>{formatDate(invite.sentAt)}</TableCell>
+                                    <TableCell>
+                                        <InviteStatusBadge 
+                                            status={invite.status}
+                                        />
+                                    </TableCell>
                                     <TableCell className="text-right">
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>

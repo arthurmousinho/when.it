@@ -1,3 +1,4 @@
+import type { InviteStatus } from "@/@types/invite";
 import type { MemberRole } from "@/@types/member";
 import { api } from "@/config/api.config";
 
@@ -9,6 +10,7 @@ type Response = {
         authorId: string;
         organizationId: string;
         sentAt: string;
+        status: InviteStatus;
         organization: {
             name: string;
         },

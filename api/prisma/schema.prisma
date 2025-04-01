@@ -81,8 +81,9 @@ model Document {
 model Invite {
   id String @id @default(uuid())
 
-  email String     @unique
-  role  MemberRole @default(MEMBER)
+  email  String       @unique
+  role   MemberRole   @default(MEMBER)
+  status InviteStatus @default(PENDING)
 
   author   User   @relation(fields: [authorId], references: [id])
   authorId String @map("author_id")
@@ -128,6 +129,14 @@ enum MemberRole {
   MEMBER
 
   @@map("member_role")
+}
+
+enum InviteStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+
+  @@map("invite_status")
 }
 
 enum DocumentStatus {
