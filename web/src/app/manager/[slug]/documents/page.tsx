@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -18,15 +19,16 @@ import {
     Trash2,
     Eye,
     FileText,
-    File
+    File,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { UploadDocumentForm } from "./upload-document-form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import type { DocumentType } from "@/@types/document";
 import { getOrganizationDocuments } from "@/http/documents/get-organization-documents.http";
 import { formatBytes, formatDate } from "@/lib/utils";
-import Link from "next/link";
+import { EmbedDocumentConfirmation } from "./embed-document-confirmation";
+import type { DocumentType } from "@/@types/document";
+import { DocumentStatusBadge } from "./document-status-badge";
 
 function getFileIcon(type: DocumentType) {
     switch (type) {
@@ -117,17 +119,11 @@ export default async function DocumentsPage({ params: { slug } }: Props) {
                                             </div>
                                         </div>
                                     </TableCell>
-                                    <TableCell>{formatBytes(doc.fileSize)}</TableCell>
                                     <TableCell>
-                                        <Badge
-                                            variant={
-                                                doc.status === "EMBEDED"
-                                                    ? "default"
-                                                    : "outline"
-                                            }
-                                        >
-                                            {doc.status}
-                                        </Badge>
+                                        {formatBytes(doc.fileSize)}
+                                    </TableCell>
+                                    <TableCell>
+                                        <DocumentStatusBadge status={doc.status} />
                                     </TableCell>
                                     <TableCell>
                                         {formatDate(doc.uploadedAt)}
@@ -147,6 +143,11 @@ export default async function DocumentsPage({ params: { slug } }: Props) {
                                                         <Eye className="mr-2 h-4 w-4" />
                                                         Visualizar
                                                     </Link>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem>
+                                                    <EmbedDocumentConfirmation
+                                                        documentId={doc.id}
+                                                    />
                                                 </DropdownMenuItem>
                                                 <DropdownMenuItem>
                                                     <Download className="mr-2 h-4 w-4" />

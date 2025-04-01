@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import axios from 'axios';
 import { v2 as cloudinaryV2 } from 'cloudinary';
 
 @Injectable()
-export class CloudinaryService {
+export class StorageService {
 
     constructor() {
         cloudinaryV2.config({
@@ -17,7 +18,6 @@ export class CloudinaryService {
         fileId: string;
     }): Promise<string> {
         const { file, fileId } = params;
-
         return new Promise((resolve, reject) => {
             cloudinaryV2.uploader.upload_stream(
                 {
@@ -29,12 +29,22 @@ export class CloudinaryService {
                 (error, result) => {
                     if (error || !result) {
                         console.log(error);
-                        return reject(`Erro ao fazer upload`);
+                        return reject('Erro ao fazer upload');
                     }
                     resolve(result.secure_url);
                 },
             ).end(file.buffer);
         });
+    }
+
+    public async getFileBuffer(fileUrl: string): Promise<Buffer> {
+        try {
+            const response = await axios.get(fileUrl, { responseType: 'arraybuffer' });
+            return Buffer.from(response.data);
+        } catch (error) {
+            console.log(error);
+            throw new Error('Erro ao obter o buffer do documento');
+        }
     }
 
 }

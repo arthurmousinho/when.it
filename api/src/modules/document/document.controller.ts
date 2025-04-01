@@ -3,6 +3,7 @@ import {
     Controller,
     Get,
     Param,
+    Patch,
     Post,
     UseGuards,
 } from '@nestjs/common';
@@ -29,6 +30,14 @@ export class DocumentController {
             ...data,
             organizationSlug,
         });
+        return { document };
+    }
+
+    @Post(':documentId/embed')
+    public async embbed(
+        @Param('documentId') documentId: string
+    ) {
+        const document = await this.documentService.embedDocument(documentId);
         return { document };
     }
 

@@ -1,8 +1,10 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "src/database/prisma.service";
-import { CloudinaryService } from "./infra/claudinary.service";
+import { StorageService } from "./infra/storage.service";
 import { randomUUID } from "node:crypto";
+import { VectorService } from "./infra/vector.service";
 import { OrganizationService } from "../organization/organization.service";
+import { EmbeddingService } from "./infra/embedding.service";
 import type { UploadDocumentDTO } from "./dtos/upload-document.dto";
 
 @Injectable()
@@ -10,8 +12,10 @@ export class DocumentService {
 
     constructor(
         private readonly prismaService: PrismaService,
-        private readonly cloudinaryService: CloudinaryService,
-        private readonly organizationService: OrganizationService
+        private readonly storageService: StorageService,
+        private readonly vectorService: VectorService,
+        private readonly organizationService: OrganizationService,
+        private readonly embeddingService: EmbeddingService
     ) { }
 
     public async upload(data: UploadDocumentDTO & { organizationSlug: string }) {
@@ -23,7 +27,7 @@ export class DocumentService {
         }
 
         const fileId = randomUUID();
-        const fileUrl = await this.cloudinaryService.uploadFile({ file, fileId });
+        const fileUrl = await this.storageService.uploadFile({ file, fileId });
 
         const document = await this.prismaService.document.create({
             data: {
@@ -52,6 +56,44 @@ export class DocumentService {
             }
         })
         return documents;
+    }
+
+    public async getById(documentId: string) {
+        const document = await this.prismaService.document.findUnique({
+            where: {
+                id: documentId
+            }
+        });
+        return document;
+    }
+
+    public async embedDocument(documentId: string) {
+        const document = await this.getById(documentId);
+
+        if (!document) {
+            throw new NotFoundException('Documento não encontrado');
+        }
+
+        const embedding = await this.embeddingService.generateEmbedding(document.fileUrl);
+
+        await this.vectorService.upsert(
+            [{
+                id: document.fileId,
+                values: embedding,
+                metadata: { name: document.name }
+            }],
+        );
+
+        const updatedDocument = await this.prismaService.document.update({
+            where: {
+                id: document.id
+            },
+            data: {
+                status: 'EMBEDDED'
+            }
+        });
+
+        return updatedDocument;
     }
 
 }

@@ -34,7 +34,10 @@ const formSchema = z.object({
         .min(10, { message: "A descrição deve ter pelo menos 10 caracteres." })
         .max(100, { message: "A descrição deve ter no máximo 100 caracteres." }),
     file: z
-        .instanceof(FileList, { message: "É necessário selecionar um arquivo." })
+        .any()
+        .refine((files) => files instanceof FileList && files.length > 0, {
+            message: "É necessário selecionar um arquivo.",
+        })
 });
 
 type FormValues = z.infer<typeof formSchema>;

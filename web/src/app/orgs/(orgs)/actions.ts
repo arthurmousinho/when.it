@@ -3,6 +3,7 @@
 import type { FormActionResponse } from "@/@types/form-action-response";
 import { createOrganization } from "@/http/organization/create-organization.http";
 import { HTTPError } from "ky";
+import { revalidateTag } from "next/cache";
 
 type CreateOrganizationParams = {
     name: string;
@@ -14,6 +15,8 @@ export async function createOrganizationAction(
 
     try {
         await createOrganization(data);
+
+        revalidateTag('organizations');
 
         return {
             message: 'Organização criada com sucesso',

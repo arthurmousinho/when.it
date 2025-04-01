@@ -132,7 +132,7 @@ enum MemberRole {
 
 enum DocumentStatus {
   UPLOADED
-  EMBEDED
+  EMBEDDED
 
   @@map("document_status")
 }

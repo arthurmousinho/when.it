@@ -67,8 +67,8 @@ export function ManagerSidebar({ slug }: Props) {
                     </SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {links.map((link) => (
-                                <SidebarMenuItem>
+                            {links.map((link, index) => (
+                                <SidebarMenuItem key={index}>
                                     <SidebarMenuButton isActive={false} className="cursor-pointer">
                                         <Link
                                             href={link.href}

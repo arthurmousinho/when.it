@@ -1,2 +1,2 @@
 export type DocumentType = 'PDF';
-export type DocumentStatus = 'UPLOADED' | 'EMBEDED';
+export type DocumentStatus = 'UPLOADED' | 'EMBEDDED';

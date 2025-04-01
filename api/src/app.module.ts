@@ -13,7 +13,7 @@ import { InviteModule } from './modules/invite/invite.module';
     OrganizationModule,
     MemberModule,
     EmailModule,
-    InviteModule
+    InviteModule,
   ]
 })
 

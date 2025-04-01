@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
-import { CloudinaryService } from './infra/claudinary.service';
+import { StorageService } from './infra/storage.service';
 import { DocumentService } from './document.service';
-import { PineconeService } from './infra/pinecone.service';
+import { VectorService } from './infra/vector.service';
 import { DocumentController } from './document.controller';
 import { NestjsFormDataModule } from 'nestjs-form-data';
 import { OrganizationModule } from '../organization/organization.module';
+import { EmbeddingService } from './infra/embedding.service';
 
 @Module({
   imports: [
@@ -17,10 +18,15 @@ import { OrganizationModule } from '../organization/organization.module';
   ],
   providers: [
     PrismaService,
-    CloudinaryService,
-    PineconeService,
+    StorageService,
+    VectorService,
+    EmbeddingService,
     DocumentService
   ],
+  exports: [
+    DocumentService,
+    VectorService
+  ]
 })
 
 export class DocumentModule { }
