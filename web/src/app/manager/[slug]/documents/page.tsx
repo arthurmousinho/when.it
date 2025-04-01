@@ -8,7 +8,6 @@ import {
     DropdownMenuLabel,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
     Search,
@@ -20,6 +19,7 @@ import {
     Eye,
     FileText,
     File,
+    Bot,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { UploadDocumentForm } from "./upload-document-form";
@@ -27,8 +27,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { getOrganizationDocuments } from "@/http/documents/get-organization-documents.http";
 import { formatBytes, formatDate } from "@/lib/utils";
 import { EmbedDocumentConfirmation } from "./embed-document-confirmation";
-import type { DocumentType } from "@/@types/document";
 import { DocumentStatusBadge } from "./document-status-badge";
+import type { DocumentType } from "@/@types/document";
 
 function getFileIcon(type: DocumentType) {
     switch (type) {
@@ -106,7 +106,7 @@ export default async function DocumentsPage({ params: { slug } }: Props) {
                                 <TableRow key={index}>
                                     <TableCell className="font-medium py-4">
                                         <div className="flex items-center gap-2">
-                                            <div className="border p-3 rounded-md">
+                                            <div className="border p-3 rounded-md bg-primary/10">
                                                 {getFileIcon(doc.fileType)}
                                             </div>
                                             <div>
@@ -139,20 +139,17 @@ export default async function DocumentsPage({ params: { slug } }: Props) {
                                             <DropdownMenuContent align="end">
                                                 <DropdownMenuLabel>Ações</DropdownMenuLabel>
                                                 <DropdownMenuItem asChild>
-                                                    <Link href={doc.fileUrl} target="_blank" rel="noopener noreferrer">
+                                                    <Link href={`/manager/${slug}/documents/${doc.id}`}>
                                                         <Eye className="mr-2 h-4 w-4" />
                                                         Visualizar
                                                     </Link>
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem>
-                                                    <EmbedDocumentConfirmation
-                                                        documentId={doc.id}
-                                                    />
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem>
-                                                    <Download className="mr-2 h-4 w-4" />
-                                                    Download
-                                                </DropdownMenuItem>
+                                                <EmbedDocumentConfirmation documentId={doc.id}>
+                                                    <DropdownMenuItem>
+                                                        <Bot className="mr-2 h-4 w-4" />
+                                                        Integrar
+                                                    </DropdownMenuItem>
+                                                </EmbedDocumentConfirmation>
                                                 <DropdownMenuItem>
                                                     <Pencil className="mr-2 h-4 w-4" />
                                                     Editar

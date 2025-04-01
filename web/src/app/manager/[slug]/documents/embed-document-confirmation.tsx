@@ -13,17 +13,17 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Bot } from "lucide-react";
 import { embedDocumentAction, type EmbedDocumentActionData } from "./actions";
 import { useFormState } from "@/hooks/use-form-state";
 import { Button } from "@/components/ui/button";
 
 type Props = {
     documentId: string;
+    children: React.ReactNode;
 };
 
-export function EmbedDocumentConfirmation({ documentId }: Props) {
-    const [isOpen, setIsOpen] = useState(false); 
+export function EmbedDocumentConfirmation({ children, documentId }: Props) {
+    const [isOpen, setIsOpen] = useState(false);
 
     const { handleSubmit, isLoading } = useFormState<EmbedDocumentActionData>({
         action: embedDocumentAction,
@@ -39,14 +39,14 @@ export function EmbedDocumentConfirmation({ documentId }: Props) {
     return (
         <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
             <AlertDialogTrigger
+                asChild
                 className="flex flex-row items-center gap-4 cursor-pointer"
                 onClick={(e) => {
                     e.stopPropagation();
-                    setIsOpen(true); 
+                    setIsOpen(true);
                 }}
             >
-                <Bot className="size-4" />
-                Integrar
+                {children}
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
@@ -61,7 +61,7 @@ export function EmbedDocumentConfirmation({ documentId }: Props) {
                 <AlertDialogFooter>
                     <AlertDialogCancel
                         onClick={() => setIsOpen(false)}
-                        disabled={isLoading} 
+                        disabled={isLoading}
                     >
                         Cancelar
                     </AlertDialogCancel>

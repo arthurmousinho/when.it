@@ -49,4 +49,12 @@ export class DocumentController {
         return { documents };
     }
 
+    @Get(':documentId')
+    public async getById(
+        @Param('documentId') documentId: string
+    ) {
+        const document = await this.documentService.getById(documentId);
+        return { document };
+    }
+
 }

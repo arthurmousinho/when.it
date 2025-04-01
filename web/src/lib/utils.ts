@@ -24,25 +24,13 @@ export function formatBytes(bytes: number) {
 export function formatDate(date: string) {
   const dateTime = new Date(date);
 
-  const options: Intl.DateTimeFormatOptions = {
-    weekday: "short",
-    day: "2-digit",
-    month: "short",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  };
+  const day = String(dateTime.getDate()).padStart(2, "0");
+  const month = String(dateTime.getMonth() + 1).padStart(2, "0"); 
+  const year = dateTime.getFullYear();
+  const hours = String(dateTime.getHours()).padStart(2, "0");
+  const minutes = String(dateTime.getMinutes()).padStart(2, "0");
 
-  let formattedDate = dateTime.toLocaleString("pt-BR", options).replace(",", "");
-
-  formattedDate = formattedDate.replace(/\b(\w+)\./g, "$1");
-
-  formattedDate = formattedDate.replace(/\b(\w+)\b/g, (match) =>
-    match.charAt(0).toUpperCase() + match.slice(1)
-  );
-
-  return formattedDate;
-  
+  return `${day}/${month}/${year} ${hours}:${minutes}`;
 }
 
 export function getInitials(name: string): string {

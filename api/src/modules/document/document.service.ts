@@ -89,7 +89,8 @@ export class DocumentService {
                 id: document.id
             },
             data: {
-                status: 'EMBEDDED'
+                status: 'EMBEDDED',
+                updatedAt: new Date()
             }
         });
 
