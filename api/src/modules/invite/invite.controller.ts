@@ -4,7 +4,6 @@ import { CreateInviteDTO } from "./dtos/create-invite.dto";
 import { DecodedToken } from "../auth/decoded-token.decorator";
 import { AuthGuard } from "../auth/auth.guard";
 
-@UseGuards(AuthGuard)
 @Controller('invites')
 export class InviteController {
 
@@ -12,6 +11,7 @@ export class InviteController {
         private readonly inviteService: InviteService
     ) { }
 
+    @UseGuards(AuthGuard)
     @Post('/organization/:organizationSlug')
     public async sendInvite(
         @Param('organizationSlug') organizationSlug: string,
@@ -26,12 +26,21 @@ export class InviteController {
         return { invite }
     }
 
-    @Get('/organization/:organizationSlug') 
+    @UseGuards(AuthGuard)
+    @Get('/organization/:organizationSlug')
     public async getOrganizationInvites(
         @Param('organizationSlug') organizationSlug: string
     ) {
         const invites = await this.inviteService.getOrganizationInvites(organizationSlug);
         return { invites }
+    }
+
+    @Get(':inviteId')
+    public async getById(
+        @Param('inviteId') inviteId: string
+    ) {
+        const invite = await this.inviteService.getById(inviteId);
+        return { invite }
     }
 
 }

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { EmailService } from "../email/email.service";
 import { PrismaService } from "src/database/prisma.service";
 import { OrganizationService } from "../organization/organization.service";
@@ -21,6 +21,16 @@ export class InviteService {
 
         if (!org) {
             throw new NotFoundException('Organização não encontrada');
+        }
+
+        const inviteAlreadySentToEmail = await this.prismaService.invite.findUnique({
+            where: {
+                email
+            }
+        });
+
+        if (inviteAlreadySentToEmail) {
+            throw new ConflictException('Já foi enviado um convite para este email');
         }
 
         const invite = await this.prismaService.invite.create({
@@ -63,10 +73,39 @@ export class InviteService {
         const invites = await this.prismaService.invite.findMany({
             where: {
                 organizationId: org.id
+            },
+            orderBy: {
+                sentAt: 'desc'
             }
         });
 
         return invites;
+    }
+
+    public async getById(inviteId: string) {
+        const invite = await this.prismaService.invite.findUnique({
+            where: {
+                id: inviteId
+            },
+            include: {
+                author: {
+                    select: {
+                        name: true
+                    }
+                },
+                organization: {
+                    select: {
+                        name: true
+                    }
+                }
+            }
+        })
+
+        if (!invite) {
+            throw new NotFoundException('Convite não encontrado');
+        }
+
+        return invite;
     }
 
 }
