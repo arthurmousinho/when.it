@@ -1,7 +1,7 @@
 import { BaseHeader } from "@/components/base-header";
 import { OrganizationsListing } from "./(orgs)/organizations-listing";
 
-export default async function OrganizationsPage() {
+export default function OrganizationsPage() {
     return (
         <div className="w-full">
             <BaseHeader />

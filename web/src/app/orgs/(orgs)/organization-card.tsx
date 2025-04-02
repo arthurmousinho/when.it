@@ -4,12 +4,13 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import type { MemberRole } from "@/@types/member";
 
 type OrganizationCardProps = {
     name: string;
     slug: string;
     membersCount: number;
-    isManager: boolean;
+    role: MemberRole;
     chatsCount: number;
     documentsCount: number;
 }
@@ -17,7 +18,7 @@ type OrganizationCardProps = {
 export function OrganizationCard({
     name,
     slug,
-    isManager,
+    role,
     membersCount,
     chatsCount,
     documentsCount,
@@ -30,10 +31,10 @@ export function OrganizationCard({
                     <CardTitle className="text-lg font-bold truncate">
                         {name}
                     </CardTitle>
-                    {isManager
+                    {role === 'MANAGER'
                         ? (
                             <Badge variant="secondary" className="font-medium">
-                                Admin
+                                Gerente
                             </Badge>
                         )
                         : (
@@ -65,7 +66,7 @@ export function OrganizationCard({
             </CardContent>
             <CardFooter>
                 <Link
-                    href={isManager ? `/manager/${slug}` : `/member/${slug}`}
+                    href={role === 'MANAGER' ? `/manager/${slug}` : `/member/${slug}`}
                     type="submit"
                     className={cn(buttonVariants({
                         variant: "secondary",

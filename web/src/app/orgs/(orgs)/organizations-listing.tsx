@@ -68,7 +68,7 @@ export async function OrganizationsListing() {
                         membersCount={org.membersCount}
                         documentsCount={org.documentsCount}
                         chatsCount={org.chatsCount}
-                        isManager={org.manager.user.id === user.id}
+                        role={org.role}
                     />
                 ))}
             </main>

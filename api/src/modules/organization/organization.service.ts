@@ -68,15 +68,7 @@ export class OrganizationService {
                 members: {
                     where: {
                         userId,
-                    },
-                    select: {
-                        user: {
-                            select: {
-                                id: true,
-                                name: true,
-                            }
-                        }
-                    },
+                    }
                 }
             }
         });
@@ -88,7 +80,7 @@ export class OrganizationService {
             membersCount: org._count.members,
             documentsCount: org._count.documents,
             chatsCount: org._count.chats,
-            manager: org.members[0],
+            role: org.members[0].role,
         }));
     }
 

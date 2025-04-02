@@ -1,3 +1,4 @@
+import type { MemberRole } from "@/@types/member";
 import { api } from "@/config/api.config";
 
 type Response = {
@@ -8,12 +9,7 @@ type Response = {
         membersCount: number;
         documentsCount: number;
         chatsCount: number;
-        manager: {
-            user: {
-                id: string;
-                name: string;
-            }
-        };
+        role: MemberRole;
     }[]
 }
 
