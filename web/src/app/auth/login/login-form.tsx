@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { loginUserAction } from "./actions";
 import { toast } from "sonner";
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useTransition } from "react";
 
 const loginSchema = z.object({
@@ -32,6 +32,8 @@ const loginSchema = z.object({
 
 export function LoginForm() {
 
+    const searchParams = useSearchParams()
+
     const router = useRouter();
 
     const [isLoading, startTransition] = useTransition();
@@ -39,7 +41,7 @@ export function LoginForm() {
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
-            email: "",
+            email: searchParams.get('email') || "",
             password: "",
         }
     })

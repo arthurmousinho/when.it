@@ -1,1 +1,1 @@
-export type InviteStatus = 'PENDING' | 'ACCEPTED' | 'REJECTED';
+export type InviteStatus = 'PENDING' | 'ACCEPTED';

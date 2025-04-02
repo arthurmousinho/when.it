@@ -27,7 +27,7 @@ export class InviteService {
             throw new NotFoundException('Organização não encontrada');
         }
 
-        const inviteAlreadySentToEmail = await this.prismaService.invite.findUnique({
+        const inviteAlreadySentToEmail = await this.prismaService.invite.findFirst({
             where: {
                 email,
                 organizationId: org.id

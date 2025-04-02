@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { loginUserRequest } from '@/http/auth/login-user.http';
 import { HTTPError } from 'ky';
 import { AUTH_TOKEN_KEY } from '@/constants/auth-token-key';
+import { acceptInvite } from '@/http/invite/accept-invite.http';
 
 type Params = {
     email: string;
@@ -12,15 +13,28 @@ type Params = {
 
 export async function loginUserAction(data: Params) {
     try {
+        const cookiesData = await cookies();
+
         const { token } = await loginUserRequest({
             email: data.email,
             password: data.password
         });
 
-        (await cookies()).set(AUTH_TOKEN_KEY, token, {
+        cookiesData.set(AUTH_TOKEN_KEY, token, {
             path: '/',
             maxAge: 60 * 60 * 24, // 24 hours
         });
+
+        const inviteId = cookiesData.get('inviteId')?.value
+
+        if (inviteId) {
+            try {
+                await acceptInvite(inviteId)
+                cookiesData.delete('inviteId')
+            } catch (e) {
+                console.log(e)
+            }
+        }
 
         return {
             message: 'Login realizado com sucesso',

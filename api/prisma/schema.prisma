@@ -81,7 +81,7 @@ model Document {
 model Invite {
   id String @id @default(uuid())
 
-  email  String       @unique
+  email  String       
   role   MemberRole   @default(MEMBER)
   status InviteStatus @default(PENDING)
 
@@ -134,7 +134,6 @@ enum MemberRole {
 enum InviteStatus {
   PENDING
   ACCEPTED
-  REJECTED
 
   @@map("invite_status")
 }
