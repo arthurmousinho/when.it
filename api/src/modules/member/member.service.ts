@@ -1,6 +1,7 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { OrganizationService } from "../organization/organization.service";
 import { PrismaService } from "src/database/prisma.service";
+import type { CreateMemberDTO } from "./dtos/create-member.dto";
 
 @Injectable()
 export class MemberService {
@@ -9,6 +10,31 @@ export class MemberService {
         private readonly prismaService: PrismaService,
         private readonly organizationService: OrganizationService
     ) { }
+
+    public async create(data: CreateMemberDTO) {
+        const { role, userId, organizationId } = data;
+
+        const memberAlreadyExists = await this.prismaService.member.findFirst({
+            where: {
+                userId: data.userId,
+                organizationId: organizationId
+            }
+        });
+
+        if (memberAlreadyExists) {
+            throw new ConflictException('Usuário já é membro desta organização');
+        }
+
+        const member = await this.prismaService.member.create({
+            data: {
+                role,
+                userId,
+                organizationId
+            }
+        });
+
+        return member;
+    }
 
     public async getOrganizationMembers(organizationSlug: string) {
         const org = await this.organizationService.getBySlug(organizationSlug);

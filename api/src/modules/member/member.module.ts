@@ -16,7 +16,7 @@ import { MemberService } from './member.service';
         MemberService
     ],
     exports: [
-
+        MemberService
     ]
 })
 

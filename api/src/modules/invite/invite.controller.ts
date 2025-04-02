@@ -26,6 +26,17 @@ export class InviteController {
         return { invite }
     }
 
+    @Post(':inviteId/accept')
+    public async acceptInvite(
+        @Param('inviteId') inviteId: string,
+        @DecodedToken() decodedToken: DecodedToken
+    ) {
+        await this.inviteService.acceptInvite({
+            inviteId,
+            userId: decodedToken.userId
+        });
+    }
+
     @UseGuards(AuthGuard)
     @Get('/organization/:organizationSlug')
     public async getOrganizationInvites(
