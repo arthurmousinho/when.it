@@ -3,6 +3,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
+
 :root {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
@@ -59,6 +60,21 @@
     --chart-5: oklch(0.645 0.246 16.439);
 }
 
+@keyframes orbit {
+  0% {
+    transform: rotate(var(--angle, 0deg)) translateY(var(--radius, 0px))
+      rotate(calc(var(--angle, 0deg) * -1));
+  }
+  100% {
+    transform: rotate(calc(var(--angle, 0deg) + 360deg))
+      translateY(var(--radius, 0px))
+      rotate(calc((var(--angle, 0deg) * -1) - 360deg));
+  }
+}
+
+.animate-orbit {
+  animation: orbit var(--duration, 1s) linear infinite;
+}
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);

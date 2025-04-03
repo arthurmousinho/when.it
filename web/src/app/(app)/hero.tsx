@@ -5,7 +5,7 @@ import { HeroAnimatedFAQ } from "../../components/home-animated-faq"
 
 export function HeroSection() {
     return (
-        <section className="w-full max-w-[1200px] flex justify-between gap-10 items-center">
+        <section className="w-full flex justify-between gap-10 items-center">
             <aside className="w-[60%] space-y-4">
                 <div className="w-[300px]">
                     <HomeAnimatedGradientText />
