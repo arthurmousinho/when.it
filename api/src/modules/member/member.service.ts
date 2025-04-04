@@ -60,4 +60,18 @@ export class MemberService {
         return members;
     }
 
+    public async getMembership(params: {
+        userId: string;
+        organizationId: string;
+    }) {
+        const { userId, organizationId } = params;
+
+        return await this.prismaService.member.findFirst({
+            where: {
+                userId, 
+                organizationId
+            },
+        });
+    }
+
 }
