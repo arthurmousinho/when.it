@@ -1,6 +1,7 @@
 import { UsersRound, FileText, Zap } from "lucide-react";
 import Image from "next/image";
 import chatBotImage from "@/assets/illustrations/chatbot.svg"
+import { IconCard } from "@/components/icon-card";
 
 const features = [
     {
@@ -42,9 +43,9 @@ export function FeaturesSection() {
                             className="flex items-center justify-start gap-3"
                             key={index}
                         >
-                            <div className="rounded-md bg-primary/10 p-2 border">
+                            <IconCard>
                                 {feature.icon}
-                            </div>
+                            </IconCard>
                             <div>
                                 <h3 className="font-medium text-slate-900">
                                     {feature.title}

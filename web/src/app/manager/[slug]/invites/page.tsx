@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
+    Mail,
     MoreVertical,
     X,
 } from "lucide-react";
@@ -11,6 +12,7 @@ import { MemberRoleBadge } from "@/components/member-role-badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { InviteMemberDialog } from "../members/invite-member-dialog";
 import { InviteStatusBadge } from "./invite-status-badge";
+import { IconCard } from "@/components/icon-card";
 
 type Props = {
     params: {
@@ -38,7 +40,6 @@ export default async function InvitesPage({ params: { slug } }: Props) {
                             <TableRow>
                                 <TableHead>Email</TableHead>
                                 <TableHead>Cargo</TableHead>
-                                <TableHead>Data de Envio</TableHead>
                                 <TableHead>Status</TableHead>
                                 <TableHead className="text-right">Ações</TableHead>
                             </TableRow>
@@ -46,15 +47,28 @@ export default async function InvitesPage({ params: { slug } }: Props) {
                         <TableBody>
                             {invites.map(invite => (
                                 <TableRow key={invite.id}>
-                                    <TableCell>{invite.email}</TableCell>
+                                    <TableCell>
+                                        <div className="flex items-center gap-2">
+                                            <IconCard>
+                                                <Mail className="size-6" />
+                                            </IconCard>
+                                            <div className="flex flex-col gap-1">
+                                                <span>
+                                                    {invite.email}
+                                                </span>
+                                                <p className="text-xs text-muted-foreground truncate max-w-[250px]">
+                                                    {formatDate(invite.sentAt)}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </TableCell>
                                     <TableCell>
                                         <MemberRoleBadge
                                             role={invite.role}
                                         />
                                     </TableCell>
-                                    <TableCell>{formatDate(invite.sentAt)}</TableCell>
                                     <TableCell>
-                                        <InviteStatusBadge 
+                                        <InviteStatusBadge
                                             status={invite.status}
                                         />
                                     </TableCell>

@@ -29,6 +29,7 @@ import { formatBytes, formatDate } from "@/lib/utils";
 import { EmbedDocumentConfirmation } from "./embed-document-confirmation";
 import { DocumentStatusBadge } from "./document-status-badge";
 import type { DocumentType } from "@/@types/document";
+import { IconCard } from "@/components/icon-card";
 
 function getFileIcon(type: DocumentType) {
     switch (type) {
@@ -104,12 +105,12 @@ export default async function DocumentsPage({ params: { slug } }: Props) {
                         <TableBody>
                             {documents.map((doc, index) => (
                                 <TableRow key={index}>
-                                    <TableCell className="font-medium py-4">
+                                    <TableCell className="font-medium">
                                         <div className="flex items-center gap-2">
-                                            <div className="border p-3 rounded-md bg-primary/10">
+                                            <IconCard>
                                                 {getFileIcon(doc.fileType)}
-                                            </div>
-                                            <div>
+                                            </IconCard>
+                                            <div className="flex flex-col gap-1">
                                                 <span>
                                                     {doc.name}
                                                 </span>

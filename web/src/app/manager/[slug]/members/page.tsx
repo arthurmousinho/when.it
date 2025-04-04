@@ -14,6 +14,7 @@ import { getOrganizationMembers } from "@/http/member/get-organization-members.h
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { MemberRoleBadge } from "@/components/member-role-badge";
 import { InviteMemberDialog } from "./invite-member-dialog";
+import { IconCard } from "@/components/icon-card";
 
 type Props = {
     params: {
@@ -60,7 +61,6 @@ export default async function MembersPage({ params: { slug } }: Props) {
                         <TableHeader>
                             <TableRow>
                                 <TableHead>Usuário</TableHead>
-                                <TableHead>Email</TableHead>
                                 <TableHead>Cargo</TableHead>
                                 <TableHead className="text-right">Ações</TableHead>
                             </TableRow>
@@ -68,16 +68,20 @@ export default async function MembersPage({ params: { slug } }: Props) {
                         <TableBody>
                             {members.map(member => (
                                 <TableRow key={member.id} className="hover:bg-transparent">
-                                    <TableCell className="font-medium py-4">
+                                    <TableCell className="font-medium">
                                         <div className="flex items-center gap-2">
-                                            <div className="border p-3 rounded-md">
-                                                <UserRound size={20} className="text-primary" />
+                                            <IconCard>
+                                                <UserRound className="size-6"/>
+                                            </IconCard>
+                                            <div className="flex flex-col gap-1">
+                                                <span>
+                                                    {member.user.name}
+                                                </span>
+                                                <p className="text-xs text-muted-foreground truncate max-w-[250px]">
+                                                    {member.user.email}
+                                                </p>
                                             </div>
-                                            {member.user.name}
                                         </div>
-                                    </TableCell>
-                                    <TableCell>
-                                        {member.user.email}
                                     </TableCell>
                                     <TableCell>
                                         <MemberRoleBadge
