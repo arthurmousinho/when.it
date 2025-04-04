@@ -1,23 +1,28 @@
 import { ProfileButton } from "@/app/auth/(auth)/profile-button";
-import { 
-    Breadcrumb, 
-    BreadcrumbItem, 
-    BreadcrumbLink, 
-    BreadcrumbList, 
-    BreadcrumbPage, 
-    BreadcrumbSeparator 
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, Sidebar } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { cn } from "@/lib/utils";
+import { Sidebar } from "lucide-react";
 
 export function ManagerHeader() {
     return (
         <header className="border-b p-4">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                    <Button variant="outline" size="icon" className="text-muted-foreground">
+                    <SidebarTrigger className={`
+                        ${cn(buttonVariants({ variant: "outline", size: "icon" }))}
+                        text-muted-foreground    
+                    `}>
                         <Sidebar size={20} />
-                    </Button>
+                    </SidebarTrigger>
                     <Breadcrumb>
                         <BreadcrumbList>
                             <BreadcrumbItem>

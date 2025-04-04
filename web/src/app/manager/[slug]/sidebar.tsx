@@ -4,6 +4,7 @@ import {
     Folder,
     UsersRound,
     Mail,
+    MessagesSquare,
 } from "lucide-react"
 import {
     Sidebar,
@@ -35,6 +36,11 @@ export function ManagerSidebar({ slug }: Props) {
             href: `/manager/${slug}/chatbot`,
             label: "Chatbot",
             icon: <Bot size={20} />,
+        },
+        {
+            href: `/manager/${slug}/chats`,
+            label: "Conversas",
+            icon: <MessagesSquare size={20} />,
         },
         {
             href: `/manager/${slug}/documents`,
