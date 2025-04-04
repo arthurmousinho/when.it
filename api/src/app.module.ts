@@ -6,6 +6,7 @@ import { MemberModule } from './modules/member/member.module';
 import { EmailModule } from './modules/email/email.module';
 import { InviteModule } from './modules/invite/invite.module';
 import { ChatModule } from './modules/chat/chat.module';
+import { AIModule } from './modules/ai/ai.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { ChatModule } from './modules/chat/chat.module';
     MemberModule,
     EmailModule,
     InviteModule,
-    ChatModule
+    ChatModule,
+    AIModule
   ]
 })
 

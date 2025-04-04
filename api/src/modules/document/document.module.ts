@@ -6,12 +6,13 @@ import { VectorService } from './infra/vector.service';
 import { DocumentController } from './document.controller';
 import { NestjsFormDataModule } from 'nestjs-form-data';
 import { OrganizationModule } from '../organization/organization.module';
-import { EmbeddingService } from './infra/embedding.service';
+import { AIModule } from '../ai/ai.module';
 
 @Module({
   imports: [
     NestjsFormDataModule,
-    OrganizationModule
+    OrganizationModule,
+    AIModule
   ],
   controllers: [
     DocumentController
@@ -20,7 +21,6 @@ import { EmbeddingService } from './infra/embedding.service';
     PrismaService,
     StorageService,
     VectorService,
-    EmbeddingService,
     DocumentService
   ],
   exports: [

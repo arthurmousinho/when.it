@@ -4,7 +4,7 @@ import { StorageService } from "./infra/storage.service";
 import { randomUUID } from "node:crypto";
 import { VectorService } from "./infra/vector.service";
 import { OrganizationService } from "../organization/organization.service";
-import { EmbeddingService } from "./infra/embedding.service";
+import { AIService } from "../ai/ai.service";
 import type { UploadDocumentDTO } from "./dtos/upload-document.dto";
 
 @Injectable()
@@ -15,7 +15,7 @@ export class DocumentService {
         private readonly storageService: StorageService,
         private readonly vectorService: VectorService,
         private readonly organizationService: OrganizationService,
-        private readonly embeddingService: EmbeddingService
+        private readonly aiService: AIService
     ) { }
 
     public async upload(data: UploadDocumentDTO & { organizationSlug: string }) {
@@ -74,7 +74,8 @@ export class DocumentService {
             throw new NotFoundException('Documento não encontrado');
         }
 
-        const embedding = await this.embeddingService.generateEmbedding(document.fileUrl);
+        const fileBuffer = await this.storageService.getFileBuffer(document.fileUrl);
+        const embedding = await this.aiService.generateEmbedding(fileBuffer);
 
         await this.vectorService.upsert(
             [{

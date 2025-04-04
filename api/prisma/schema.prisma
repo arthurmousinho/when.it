@@ -118,6 +118,7 @@ model Message {
   id String @id @default(uuid())
 
   content String
+  authorType MessageAuthorType @default(MEMBER)
 
   chat   Chat   @relation(fields: [chatId], references: [id])
   chatId String @map("chat_id")
@@ -125,6 +126,13 @@ model Message {
   createdAt DateTime @default(now()) @map("created_at")
 
   @@map("messages")
+}
+
+enum MessageAuthorType {
+  MEMBER
+  AI
+
+  @@map("message_author_type")
 }
 
 enum MemberRole {
