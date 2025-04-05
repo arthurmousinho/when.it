@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
+import * as pdf from "pdf-parse";
 import { v2 as cloudinaryV2 } from 'cloudinary';
 
 @Injectable()
@@ -37,7 +38,7 @@ export class StorageService {
         });
     }
 
-    public async getFileBuffer(fileUrl: string): Promise<Buffer> {
+    private async getFileBuffer(fileUrl: string): Promise<Buffer> {
         try {
             const response = await axios.get(fileUrl, { responseType: 'arraybuffer' });
             return Buffer.from(response.data);
@@ -45,6 +46,12 @@ export class StorageService {
             console.log(error);
             throw new Error('Erro ao obter o buffer do documento');
         }
+    }
+
+    public async getFileContent(fileUrl: string): Promise<string> {
+        const buffer = await this.getFileBuffer(fileUrl);
+        const pdfData = await pdf(buffer);
+        return pdfData.text;
     }
 
 }

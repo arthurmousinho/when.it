@@ -6,9 +6,7 @@ export class AddMessageDTO {
 
     chatId: string;
 
-    organizationSlug: string;
-
-    userId: string;
+    organizationId: string;
 
     authorType: MessageAuthorType;
 

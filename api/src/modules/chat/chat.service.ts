@@ -3,12 +3,12 @@ import { PrismaService } from 'src/database/prisma.service';
 import { MemberService } from '../member/member.service';
 import { OrganizationService } from '../organization/organization.service';
 import { AIService } from '../ai/ai.service';
+import { VectorService } from '../document/infra/vector.service';
+import { DocumentService } from '../document/document.service';
 
 import type { CreateChatDTO } from './dtos/create-chat.dto';
 import type { SendPromptDTO } from './dtos/send-prompt.dto';
 import type { AddMessageDTO } from './dtos/add-message.dto';
-
-import OpenAI from 'openai';
 
 @Injectable()
 export class ChatService {
@@ -17,8 +17,10 @@ export class ChatService {
         private readonly prismaService: PrismaService,
         private readonly memberService: MemberService,
         private readonly organizationService: OrganizationService,
-        private readonly aiService: AIService
-    ) {}
+        private readonly aiService: AIService,
+        private readonly vectorService: VectorService,
+        private readonly documentService: DocumentService
+    ) { }
 
     public async create(data: CreateChatDTO) {
         const { userId, organizationSlug } = data;
@@ -53,22 +55,7 @@ export class ChatService {
     }
 
     public async addMessage(data: AddMessageDTO) {
-        const { userId, chatId, content, organizationSlug, authorType } = data;
-
-        const org = await this.organizationService.getBySlug(organizationSlug);
-
-        if (!org) {
-            throw new NotFoundException('Organização não encontrada');
-        }
-
-        const membership = await this.memberService.getMembership({
-            userId,
-            organizationId: org.id,
-        })
-
-        if (!membership) {
-            throw new UnauthorizedException('Você não é membro dessa organização');
-        }
+        const { chatId, content, organizationId, authorType } = data;
 
         const chat = await this.getById(chatId);
 
@@ -76,7 +63,7 @@ export class ChatService {
             throw new NotFoundException('Chat não encontrado');
         }
 
-        const chatBelongsToOrg = chat.organizationId === org.id;
+        const chatBelongsToOrg = chat.organizationId === organizationId;
 
         if (!chatBelongsToOrg) {
             throw new UnauthorizedException('Você não pode enviar mensagens nesse chat');
@@ -93,25 +80,41 @@ export class ChatService {
     }
 
     public async sendPrompt(data: SendPromptDTO) {
-        const { userId, chatId, content, organizationSlug } = data;
+        const { chatId, content, organizationSlug } = data;
+
+        const org = await this.organizationService.getBySlug(organizationSlug);
+
+        if (!org) {
+            throw new NotFoundException('Organização não encontrada');
+        }
 
         await this.addMessage({
-            userId,
             chatId,
             content,
-            organizationSlug,
+            organizationId: org.id,
             authorType: "MEMBER"
-        })
+        });
 
-        const promptResponse = await this.aiService.sendPrompt(content);
+        const questionEmbedding = await this.aiService.generateEmbedding(content);
+
+        const vectorMatches = await this.vectorService.query({
+            vector: questionEmbedding.embedding,
+            organizationId: org.id,
+        });
+
+        const vectorMatchesChunks = vectorMatches.map(v => v.metadata?.chunks) as string[];
+
+        const promptResponse = await this.aiService.sendPrompt({
+            question: content,
+            organizationName: org?.name,
+            chunks: vectorMatchesChunks,
+        });
 
         return await this.addMessage({
-            userId,
             chatId,
             content: promptResponse || '',
-            organizationSlug,
+            organizationId: org.id,
             authorType: "AI"
-        })
+        });
     }
-
 }

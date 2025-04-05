@@ -1,10 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { Pinecone } from '@pinecone-database/pinecone';
 
-type Vector = {
+type VectorMetadata = {
+    name: string;
+    organizationId: string;
+    description: string;
+    chunks: string[];
+}
+
+export type Vector = {
     id: string;
     values: number[];
-    metadata?: Record<string, any>;
+    metadata: VectorMetadata;
+}
+
+type VectorQuery = {
+    vector: number[];
+    organizationId: string;
 }
 
 @Injectable()
@@ -29,21 +41,26 @@ export class VectorService {
         return namespace.upsert(vectors);
     }
 
-    public async query(vector: number[]) {
-        const index = this.pinecone.index(process.env.PINECONE_INDEX || '');
+    public async query(data: VectorQuery) {
+        const { vector, organizationId } = data;
+
+        const index = this.pinecone
+            .index(this.indexName, this.indexHost)
+            .namespace("default");
 
         const { matches } = await index.query({
             vector,
             topK: 10,
             includeMetadata: true,
             includeValues: false,
+            filter: {
+                organizationId: {
+                    $eq: organizationId,
+                },
+            },
         });
 
         return matches
-            .filter((match) => {
-                if (!match.score) return false;
-                return match.score > 0.8
-            })
-            .map((match) => parseInt(match.id));
     }
+
 }

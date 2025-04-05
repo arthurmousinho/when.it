@@ -67,6 +67,12 @@ export class DocumentService {
         return document;
     }
 
+    public async getByFileId(fileId: string) {
+        return await this.prismaService.document.findUnique({
+            where: { fileId }
+        });
+    }
+
     public async embedDocument(documentId: string) {
         const document = await this.getById(documentId);
 
@@ -74,14 +80,24 @@ export class DocumentService {
             throw new NotFoundException('Documento não encontrado');
         }
 
-        const fileBuffer = await this.storageService.getFileBuffer(document.fileUrl);
-        const embedding = await this.aiService.generateEmbedding(fileBuffer);
+        if (document.status === 'EMBEDDED') {
+            throw new Error('Documento já está integrado');
+        }
+
+        const fileContent = await this.storageService.getFileContent(document.fileUrl);
+
+        const { embedding, chunks } = await this.aiService.generateEmbedding(fileContent);
 
         await this.vectorService.upsert(
             [{
                 id: document.fileId,
                 values: embedding,
-                metadata: { name: document.name }
+                metadata: {
+                    name: document.name,
+                    organizationId: document.organizationId,
+                    chunks: chunks,
+                    description: document.description,
+                }
             }],
         );
 
