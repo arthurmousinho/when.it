@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import faviconImage from "@/assets/brand/icon-logo.svg"
-import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
@@ -20,11 +19,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        <SidebarProvider>
-          <Toaster />
-          {children}
-        </SidebarProvider>
+      <body className="bg-slate-50">
+        <Toaster />
+        {children}
       </body>
     </html>
   );

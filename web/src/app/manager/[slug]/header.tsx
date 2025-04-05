@@ -7,22 +7,19 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
-import { buttonVariants } from "@/components/ui/button";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
-import { Sidebar } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+
+import logo from "@/assets/brand/horizontal-logo.svg";
 
 export function ManagerHeader() {
     return (
-        <header className="border-b p-4">
+        <header className="border-b p-4 bg-white w-full shrink-0">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                    <SidebarTrigger className={`
-                        ${cn(buttonVariants({ variant: "outline", size: "icon" }))}
-                        text-muted-foreground    
-                    `}>
-                        <Sidebar size={20} />
-                    </SidebarTrigger>
+                    <Link href="/orgs" className="cursor pointer">
+                        <Image src={logo} alt="when.it" width={150} height={50} />
+                    </Link>
                     <Breadcrumb>
                         <BreadcrumbList>
                             <BreadcrumbItem>

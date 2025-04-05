@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export function BaseHeader() {
     return (
-        <header className="border-b p-4 px-10">
+        <header className="border-b p-4 bg-white">
             <div className="flex items-center justify-between">
                 <Link href="/orgs" className="cursor pointer">
                     <Image src={logo} alt="when.it" width={150} height={50} />
