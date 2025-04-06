@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { DecodedToken } from '../auth/decoded-token.decorator';
 import { AuthGuard } from '../auth/auth.guard';
@@ -36,6 +36,14 @@ export class ChatController {
             organizationSlug,
         })
         return { message }
+    }
+
+    @Get('organization/:organizationSlug')
+    public async getOrganizationChats(
+        @Param('organizationSlug') organizationSlug: string,
+    ) {
+        const chats = await this.chatService.getOrganizaionChats(organizationSlug);
+        return { chats }
     }
 
 }

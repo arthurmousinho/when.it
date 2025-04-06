@@ -10,10 +10,20 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { randomUUID } from "crypto";
-import { Avatar, AvatarFallback} from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { getOrganizationChats } from "@/http/chat/get-organization-chats.http";
+import { formatDate, getInitials } from "@/lib/utils";
 
-export default function ChatPage() {
+type Props = {
+    params: {
+        slug: string
+    }
+}
+
+export default async function ChatPage({ params: { slug } }: Props) {
+
+    const { chats } = await getOrganizationChats(slug)
+
     return (
         <div className="w-full space-y-4">
             <header className="flex items-center justify-between">
@@ -55,52 +65,58 @@ export default function ChatPage() {
                                 <TableHead>ID</TableHead>
                                 <TableHead>Usuário</TableHead>
                                 <TableHead>Mensagens</TableHead>
+                                <TableHead>Data de Criação</TableHead>
                                 <TableHead className="text-right">Ações</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            <TableRow className="hover:bg-transparent">
-                                <TableCell>
-                                    {randomUUID()}
-                                </TableCell>
-                                <TableCell className="font-medium">
-                                    <div className="flex items-center gap-2">
-                                        <Avatar className="size-10">
-                                            <AvatarFallback>
-                                                AM
-                                            </AvatarFallback>
-                                        </Avatar>
-                                        <div className="flex flex-col">
-                                            <span>
-                                                Arthur Mousinho
-                                            </span>
-                                            <p className="text-xs text-muted-foreground truncate max-w-[250px]">
-                                                arthur@email.com
-                                            </p>
+                            {chats.map(chat => (
+                                <TableRow key={chat.id}>
+                                    <TableCell>
+                                        {chat.id}
+                                    </TableCell>
+                                    <TableCell className="font-medium text-left">
+                                        <div className="flex items-center gap-2">
+                                            <Avatar className="size-10">
+                                                <AvatarFallback>
+                                                    {getInitials(chat.member.user.name)}
+                                                </AvatarFallback>
+                                            </Avatar>
+                                            <div className="flex flex-col">
+                                                <span>
+                                                    {chat.member.user.name}
+                                                </span>
+                                                <p className="text-xs text-muted-foreground truncate max-w-[250px]">
+                                                    {chat.member.user.email}
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </TableCell>
-                                <TableCell>
-                                    12 mensagens
-                                </TableCell>
-                                <TableCell className="text-right">
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger asChild>
-                                            <Button variant="outline" size="icon">
-                                                <MoreVertical className="h-4 w-4" />
-                                                <span className="sr-only">Ações</span>
-                                            </Button>
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent align="end">
-                                            <DropdownMenuLabel>Ações</DropdownMenuLabel>
-                                            <DropdownMenuItem className="text-destructive">
-                                                <X className="mr-2 size-4 text-destructive" />
-                                                Exluir
-                                            </DropdownMenuItem>
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                </TableCell>
-                            </TableRow>
+                                    </TableCell>
+                                    <TableCell>
+                                        {chat.messagesCount} mensagens
+                                    </TableCell>
+                                    <TableCell>
+                                        {formatDate(chat.createdAt)}
+                                    </TableCell>
+                                    <TableCell className="text-right">
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button variant="outline" size="icon">
+                                                    <MoreVertical className="h-4 w-4" />
+                                                    <span className="sr-only">Ações</span>
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="end">
+                                                <DropdownMenuLabel>Ações</DropdownMenuLabel>
+                                                <DropdownMenuItem className="text-destructive">
+                                                    <X className="mr-2 size-4 text-destructive" />
+                                                    Exluir
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
                         </TableBody>
                     </Table>
                 </CardContent>

@@ -54,6 +54,41 @@ export class ChatService {
         })
     }
 
+    public async getOrganizaionChats(organizationSlug: string) {
+        const chats = await this.prismaService.chat.findMany({
+            where: {
+                organization: {
+                    slug: organizationSlug
+                }
+            },
+            include: {
+                member: {
+                    select: {
+                        user: {
+                            select: {
+                                name: true,
+                                email: true
+                            }
+                        }
+                    }
+                },
+                _count: {
+                    select: {
+                        messages: true
+                    }
+                }
+            }
+        })
+
+        return chats.map(chat => {
+            return {
+                ...chat,
+                _count: undefined,
+                messagesCount: chat._count.messages
+            }
+        })
+    }
+
     public async addMessage(data: AddMessageDTO) {
         const { chatId, content, organizationId, authorType } = data;
 
