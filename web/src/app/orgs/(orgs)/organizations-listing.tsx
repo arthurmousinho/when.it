@@ -9,9 +9,36 @@ import { OrganizationCard } from "./organization-card"
 import { getUserOrganizations } from "@/http/organization/get-user-organizations.http"
 import { CreateOrganizationDialog } from "./create-organization-dialog"
 
+import emptyImage from "@/assets/illustrations/organization.svg"
+import Image from "next/image"
+
 export async function OrganizationsListing() {
 
     const { organizations } = await getUserOrganizations();
+
+    if (organizations.length === 0) {
+        return (
+            <div className="flex items-center justify-center w-full mt-20">
+                <main className="flex flex-row items-center gap-10">
+                    <Image
+                        src={emptyImage}
+                        width={250}
+                        alt="No organizations"
+                        className="mx-auto"
+                    />
+                    <div className="space-y-4 max-w-[500px]">
+                        <h3 className="text-xl font-semibold tracking-tight">
+                            Nenhuma organização encontrada
+                        </h3>
+                        <p className="text-muted-foreground text-base">
+                            Você ainda não possui nenhuma organização. Crie sua primeira para comerçar a o seu chatbot.
+                        </p>
+                        <CreateOrganizationDialog />
+                    </div>
+                </main>
+            </div>
+        )
+    }
 
     return (
         <div className="w-full space-y-4">
@@ -62,6 +89,7 @@ export async function OrganizationsListing() {
                     <OrganizationCard
                         key={org.id}
                         name={org.name}
+                        description={org.description}
                         slug={org.slug}
                         chatsCount={org.chatsCount}
                         role={org.role}

@@ -13,7 +13,7 @@ export class OrganizationService {
     ) { }
 
     public async create(data: CreateOrganizationDTO & { managerId: string }) {
-        const { name, managerId } = data;
+        const { name, managerId, description } = data;
 
         const manager = await this.userService.getById(managerId);
 
@@ -37,6 +37,7 @@ export class OrganizationService {
             data: {
                 name,
                 slug,
+                description,
                 members: {
                     create: {
                         userId: manager.id,
@@ -75,6 +76,7 @@ export class OrganizationService {
         return organizations.map(org => ({
             id: org.id,
             name: org.name,
+            description: org.description,
             slug: org.slug,
             chatsCount: org._count.chats,
             role: org.members[0].role,

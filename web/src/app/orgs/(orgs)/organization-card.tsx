@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { MessagesSquare } from "lucide-react"
 
@@ -11,16 +11,18 @@ import logoImage from "@/assets/backgrounds/bg2.png"
 import type { MemberRole } from "@/@types/member"
 
 type OrganizationCardProps = {
-    name: string
-    slug: string
-    role: MemberRole
-    chatsCount: number
+    name: string;
+    slug: string;
+    description: string;
+    role: MemberRole;
+    chatsCount: number;
 }
 
 export function OrganizationCard({
     name,
     slug,
     role,
+    description,
     chatsCount
 }: OrganizationCardProps) {
     return (
@@ -49,9 +51,9 @@ export function OrganizationCard({
                     </Badge>
                 </CardHeader>
                 <CardContent className="pt-2 px-3">
-                    <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Est laudantium hic perspiciatis corrupti fugiat modi excepturi pariatur facere cupiditate, ab, minus unde natus illo officiis aut vel repellat voluptates expedita.
-                    </p>
+                    <CardDescription className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                        {description}
+                    </CardDescription>
                 </CardContent>
             </Card>
         </Link>

@@ -6,6 +6,7 @@ type Response = {
         id: string;
         name: string;
         slug: string;
+        description: string;
         chatsCount: number;
         role: MemberRole;
     }[]

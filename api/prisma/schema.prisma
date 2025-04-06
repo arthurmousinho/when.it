@@ -37,17 +37,17 @@ model Member {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  @@index([userId, organizationId], name: "user_organization_index")
   @@unique([userId, organizationId], name: "user_organization_unique")
-
+  @@index([userId, organizationId], name: "user_organization_index")
   @@map("members")
 }
 
 model Organization {
   id String @id @default(uuid())
 
-  name String
-  slug String @unique
+  name        String
+  slug        String @unique
+  description String
 
   documents Document[]
   members   Member[]
@@ -84,7 +84,7 @@ model Document {
 model Invite {
   id String @id @default(uuid())
 
-  email  String       
+  email  String
   role   MemberRole   @default(MEMBER)
   status InviteStatus @default(PENDING)
 
@@ -117,7 +117,7 @@ model Chat {
 model Message {
   id String @id @default(uuid())
 
-  content String
+  content    String
   authorType MessageAuthorType @default(MEMBER)
 
   chat   Chat   @relation(fields: [chatId], references: [id])

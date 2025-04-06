@@ -7,6 +7,7 @@ import { revalidateTag } from "next/cache";
 
 type CreateOrganizationParams = {
     name: string;
+    description: string;
 }
 
 export async function createOrganizationAction(

@@ -19,6 +19,7 @@ export class OrganizationController {
     ) {
         return await this.organizationService.create({
             name: data.name,
+            description: data.description,
             managerId: decodedToken.userId
         });
     }

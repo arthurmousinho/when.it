@@ -2,14 +2,16 @@ import { api } from "@/config/api.config";
 
 type Payload = {
     name: string;
+    description: string;
 }
 
 type Response = {
-    name: string;
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
-    slug: string;
+    organization: {
+        id: string;
+        name: string;
+        slug: string;
+        description: string;
+    }
 }
 
 export async function createOrganization(payload: Payload) {
