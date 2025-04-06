@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
 import { CreateOrganizationDTO } from "./dtos/create-organization.dto";
 import { OrganizationService } from "./organization.service";
 import { AuthGuard } from "../auth/auth.guard";
@@ -30,5 +30,14 @@ export class OrganizationController {
         const organizations = await this.organizationService.getAllByUserId(decodedToken.userId);
         return { organizations };
     }
+
+    @Get(':slug/dashboard')
+    public async getDashboard(
+        @Param('slug') slug: string
+    ) {
+        const dashboard = await this.organizationService.getDashboard(slug);
+        return { dashboard };
+    }
+
 
 }
