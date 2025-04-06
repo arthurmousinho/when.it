@@ -7,12 +7,10 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { OrganizationCard } from "./organization-card"
 import { getUserOrganizations } from "@/http/organization/get-user-organizations.http"
-import { auth } from "@/app/auth/(auth)/auth"
 import { CreateOrganizationDialog } from "./create-organization-dialog"
 
 export async function OrganizationsListing() {
 
-    const { user } = await auth();
     const { organizations } = await getUserOrganizations();
 
     return (
@@ -59,14 +57,12 @@ export async function OrganizationsListing() {
                     </Button>
                 </div>
             </header>
-            <main className="grid grid-cols-3 gap-4">
+            <main className="grid grid-cols-4 gap-4">
                 {organizations.map(org => (
                     <OrganizationCard
                         key={org.id}
                         name={org.name}
                         slug={org.slug}
-                        membersCount={org.membersCount}
-                        documentsCount={org.documentsCount}
                         chatsCount={org.chatsCount}
                         role={org.role}
                     />

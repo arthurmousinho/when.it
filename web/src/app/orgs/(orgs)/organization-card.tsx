@@ -1,83 +1,59 @@
 import Link from "next/link";
-import { Bot, Folder, UsersRound, ArrowRight } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
-import type { MemberRole } from "@/@types/member";
+import Image from "next/image";
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { MessagesSquare } from "lucide-react"
+
+import backgroundImage from "@/assets/backgrounds/bg1.svg"
+import logoImage from "@/assets/backgrounds/bg2.png"
+
+import type { MemberRole } from "@/@types/member"
 
 type OrganizationCardProps = {
-    name: string;
-    slug: string;
-    membersCount: number;
-    role: MemberRole;
-    chatsCount: number;
-    documentsCount: number;
+    name: string
+    slug: string
+    role: MemberRole
+    chatsCount: number
 }
 
 export function OrganizationCard({
     name,
     slug,
     role,
-    membersCount,
-    chatsCount,
-    documentsCount,
+    chatsCount
 }: OrganizationCardProps) {
-
     return (
-        <Card className="w-full overflow-hidden transition-all duration-200 gap-4">
-            <CardHeader>
-                <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg font-bold truncate">
-                        {name}
-                    </CardTitle>
-                    {role === 'MANAGER'
-                        ? (
-                            <Badge variant="secondary" className="font-medium">
-                                Gerente
-                            </Badge>
-                        )
-                        : (
-                            <Badge variant="outline" className="font-medium">
-                                Membro
-                            </Badge>
-                        )
-                    }
-                </div>
-            </CardHeader>
-            <CardContent>
-                <div className="grid grid-cols-3 gap-2 border rounded-lg p-2 bg-muted/30">
-                    <div className="flex flex-col items-center justify-center p-2 text-center">
-                        <UsersRound className="h-5 w-5 text-primary mb-1" />
-                        <span className="font-medium text-sm">{membersCount}</span>
-                        <span className="text-xs text-muted-foreground">Membros</span>
-                    </div>
-                    <div className="flex flex-col items-center justify-center p-2 text-center border-x">
-                        <Bot className="h-5 w-5 text-primary mb-1" />
-                        <span className="font-medium text-sm">{chatsCount}</span>
-                        <span className="text-xs text-muted-foreground">Conversas</span>
-                    </div>
-                    <div className="flex flex-col items-center justify-center p-2 text-center">
-                        <Folder className="h-5 w-5 text-primary mb-1" />
-                        <span className="font-medium text-sm">{documentsCount}</span>
-                        <span className="text-xs text-muted-foreground">Documentos</span>
+        <Link href={role === 'MANAGER' ? `/manager/${slug}` : `/member/${slug}`}>
+            <Card className="w-full overflow-hidden transition-all duration-300 gap-0 pt-0 hover:shadow-md cursor-pointer">
+                <div
+                    className="h-24 w-full bg-cover bg-center"
+                    style={{ backgroundImage: `url(${backgroundImage.src})` }}
+                />
+                <div className="px-3 -mt-12 flex items-start justify-between">
+                    <div className="flex items-center">
+                        <div className="h-16 w-16 rounded-full border-4 border-background overflow-hidden bg-background">
+                            <Image
+                                src={logoImage}
+                                alt={name}
+                                className="h-full w-full object-cover"
+                            />
+                        </div>
                     </div>
                 </div>
-            </CardContent>
-            <CardFooter>
-                <Link
-                    href={role === 'MANAGER' ? `/manager/${slug}` : `/member/${slug}`}
-                    type="submit"
-                    className={cn(buttonVariants({
-                        variant: "secondary",
-                        size: "sm",
-                        className: "w-full transition-colors hover:bg-primary hover:text-slate-50 group"
-                    }))}
-                >
-                    Acessar
-                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-            </CardFooter>
-        </Card >
+                <CardHeader className="pt-2 flex flex-row w-full items-center justify-between px-3">
+                    <CardTitle className="text-lg font-bold truncate">{name}</CardTitle>
+                    <Badge variant="outline" className="text-muted-foreground">
+                        <MessagesSquare className="h-4 w-4 mr-1" />
+                        <span>{chatsCount} chats</span>
+                    </Badge>
+                </CardHeader>
+                <CardContent className="pt-2 px-3">
+                    <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Est laudantium hic perspiciatis corrupti fugiat modi excepturi pariatur facere cupiditate, ab, minus unde natus illo officiis aut vel repellat voluptates expedita.
+                    </p>
+                </CardContent>
+            </Card>
+        </Link>
     )
 }

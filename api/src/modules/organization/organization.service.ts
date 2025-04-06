@@ -61,8 +61,6 @@ export class OrganizationService {
             include: {
                 _count: {
                     select: {
-                        members: true,
-                        documents: true,
                         chats: true
                     },
                 },
@@ -78,8 +76,6 @@ export class OrganizationService {
             id: org.id,
             name: org.name,
             slug: org.slug,
-            membersCount: org._count.members,
-            documentsCount: org._count.documents,
             chatsCount: org._count.chats,
             role: org.members[0].role,
         }));

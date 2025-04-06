@@ -6,8 +6,6 @@ type Response = {
         id: string;
         name: string;
         slug: string;
-        membersCount: number;
-        documentsCount: number;
         chatsCount: number;
         role: MemberRole;
     }[]

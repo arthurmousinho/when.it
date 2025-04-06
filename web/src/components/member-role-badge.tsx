@@ -6,7 +6,7 @@ export function MemberRoleBadge({ role }: { role: MemberRole }) {
         <Badge
             variant={
                 role === "MANAGER"
-                    ? "default"
+                    ? "secondary"
                     : "outline"
             }
         >
