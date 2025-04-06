@@ -5,6 +5,7 @@ import { getChunks } from "src/shared/get-chunks";
 type Prompt = {
     question: string;
     organizationName: string;
+    organizationDescription: string;
     chunks: string[];
 };
 
@@ -20,11 +21,14 @@ export class AIService {
     }
 
     public async sendPrompt(prompt: Prompt) {
-        const { question, organizationName, chunks } = prompt;
+        const { question, organizationName, chunks, organizationDescription } = prompt;
 
         const finalPrompt = `
-            Você é um assistente virtual de uma organização chamada "${organizationName}".
-            Somente com base nos trechos de documentos a seguir, responda a pergunta do usuário de forma clara, objetiva e profissional.
+            Você é um assistente virtual de uma organização chamada "${organizationName}, que
+            possue a seguinte descrição: "${organizationDescription}".
+
+            Somente com base nos trechos de documentos a seguir, responda a pergunta 
+            do usuário de forma clara, objetiva e profissional.
             
             ${chunks.join('\n')}
             
@@ -32,8 +36,6 @@ export class AIService {
             
             Resposta:
         `.trim();
-
-        console.log(finalPrompt);
 
         const response = await this.openai.chat.completions.create({
             model: "gpt-3.5-turbo",
@@ -51,7 +53,7 @@ export class AIService {
 
     public async generateEmbedding(input: string) {
         const chunks = getChunks(input);
-        
+
         const response = await this.openai.embeddings.create({
             model: 'text-embedding-3-small',
             input: chunks.join('\n'),
@@ -65,7 +67,7 @@ export class AIService {
             chunks: chunks,
             embedding: response.data[0].embedding,
         };
-        
+
     }
 
 }

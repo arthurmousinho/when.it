@@ -107,6 +107,7 @@ export class ChatService {
         const promptResponse = await this.aiService.sendPrompt({
             question: content,
             organizationName: org?.name,
+            organizationDescription: org?.description,
             chunks: vectorMatchesChunks,
         });
 
