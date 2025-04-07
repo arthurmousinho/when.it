@@ -62,15 +62,29 @@ export class MemberService {
 
     public async getMembership(params: {
         userId: string;
-        organizationId: string;
+        organizationSlug: string;
     }) {
-        const { userId, organizationId } = params;
+        const { userId, organizationSlug } = params;
 
         return await this.prismaService.member.findFirst({
             where: {
                 userId, 
-                organizationId
+                organization: {
+                    slug: organizationSlug
+                }
             },
+            include: {
+                user: {
+                    select: {
+                        email: true
+                    }
+                },
+                organization: {
+                    select: {
+                        name: true
+                    }
+                }
+            }
         });
     }
 

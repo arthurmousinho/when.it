@@ -1,6 +1,6 @@
-import Link from "next/link"
-import {  Plus } from "lucide-react"
+import Link from "next/link";
 
+import { Plus } from "lucide-react";
 import {
     Sidebar,
     SidebarContent,
@@ -12,12 +12,22 @@ import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarImage } from "@/components/ui/avatar"
-import { Logo } from "@/components/logo"
+} from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Logo } from "@/components/logo";
+import { getMemberChats } from "@/http/chat/get-member-chats.http";
+import { getUserMembership } from "@/http/member/get-user-membership.http";
 
-export function ChatbotSidebar() {
+type Props = {
+    slug: string
+}
+
+export async function ChatbotSidebar({ slug }: Props) {
+
+    const { chats } = await getMemberChats(slug)
+    const { member } = await getUserMembership(slug);
+
     return (
         <Sidebar className="border-r border-t-0 bg-white">
             <SidebarHeader>
@@ -34,13 +44,15 @@ export function ChatbotSidebar() {
                     </SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            <SidebarMenuItem>
-                                <SidebarMenuButton className="cursor-pointer">
-                                    <Link href="" className="text-sm text-muted-foreground truncate">
-                                        2aafe35f-94ed-4499-b602-709454c7cfc3
+                            {chats.map(chat => (
+                                <SidebarMenuItem key={chat.id}>
+                                    <Link href={`chatbot/${slug}/${chat.id}`}>
+                                        <SidebarMenuButton className="cursor-pointer truncate text-muted-foreground">
+                                            {chat.organizationId}
+                                        </SidebarMenuButton>
                                     </Link>
-                                </SidebarMenuButton>
-                            </SidebarMenuItem>
+                                </SidebarMenuItem>
+                            ))}
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
@@ -51,8 +63,12 @@ export function ChatbotSidebar() {
                         <AvatarImage />
                     </Avatar>
                     <div className="flex flex-col items-start">
-                        <span className="font-medium text-sm">Acme Inc</span>
-                        <span className="text-muted-foreground text-xs">johndoe@email.com</span>
+                        <span className="font-medium text-sm">
+                            {member.organization.name}
+                        </span>
+                        <span className="text-muted-foreground text-xs">
+                            {member.user.email}
+                        </span>
                     </div>
                 </div>
             </SidebarFooter>

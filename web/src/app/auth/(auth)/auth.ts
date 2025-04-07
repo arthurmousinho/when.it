@@ -26,3 +26,7 @@ export async function auth() {
 
     redirect('/auth/signout');
 }
+
+export async function userMembership() {
+
+}

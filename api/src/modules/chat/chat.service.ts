@@ -24,7 +24,7 @@ export class ChatService {
 
         const membership = await this.memberService.getMembership({
             userId,
-            organizationId: org.id,
+            organizationSlug
         })
 
         if (!membership) {
@@ -79,5 +79,39 @@ export class ChatService {
             }
         })
     }
-    
+
+    public async getMemberChats(data: {
+        userId: string;
+        organizationSlug: string;
+    }) {
+        const { userId, organizationSlug } = data;
+
+        return await this.prismaService.chat.findMany({
+            where: {
+                member: {
+                    userId,
+                },
+                organization: {
+                    slug: organizationSlug
+                }
+            },
+            include: {
+                organization: {
+                    select: {
+                        name: true
+                    }
+                },
+                member: {
+                    select: {
+                        user: {
+                            select: {
+                                email: true
+                            }
+                        }
+                    }
+                }
+            }
+        })
+    }
+
 }

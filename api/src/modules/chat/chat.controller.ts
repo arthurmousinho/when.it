@@ -31,4 +31,16 @@ export class ChatController {
         return { chats }
     }
 
+    @Get('organization/:organizationSlug/member')
+    public async getMemberChats(
+        @Param('organizationSlug') organizationSlug: string,
+        @DecodedToken() decodedToken: DecodedToken,
+    ) {
+        const chats = await this.chatService.getMemberChats({
+            userId: decodedToken.userId,
+            organizationSlug
+        });
+        return { chats }
+    }
+
 }
