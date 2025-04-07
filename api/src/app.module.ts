@@ -7,6 +7,7 @@ import { EmailModule } from './modules/email/email.module';
 import { InviteModule } from './modules/invite/invite.module';
 import { ChatModule } from './modules/chat/chat.module';
 import { AIModule } from './modules/ai/ai.module';
+import { MessageModule } from './modules/message/message.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { AIModule } from './modules/ai/ai.module';
     EmailModule,
     InviteModule,
     ChatModule,
-    AIModule
+    AIModule,
+    MessageModule
   ]
 })
 

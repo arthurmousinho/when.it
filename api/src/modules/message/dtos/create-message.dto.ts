@@ -1,6 +1,6 @@
 import type { MessageAuthorType } from "@prisma/client";
 
-export class AddMessageDTO {
+export class CreateMessageDTO {
 
     content: string;
 

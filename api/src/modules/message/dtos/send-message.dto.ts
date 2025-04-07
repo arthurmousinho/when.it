@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString, IsUUID, MaxLength, MinLength } from "class-validator";
 
-export class SendPromptDTO {
+export class SendPromptMessageDTO {
 
     @IsNotEmpty({ message: 'Conteúdo do prompt não pode ser vazio.' })
     @IsString({ message: 'Conteúdo do prompt deve ser uma string.' })
