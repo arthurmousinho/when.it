@@ -30,39 +30,46 @@ export function ManagerSidebar({ slug }: Props) {
         {
             href: `/manager/${slug}`,
             label: "Dashboard",
+            target: "_self",
             icon: <Gauge size={20} />,
         },
         {
             href: `/manager/${slug}/members`,
             label: "Membros",
+            target: "_self",
             icon: <UsersRound size={20} />,
         },
         {
             href: `/manager/${slug}/invites`,
             label: "Convites",
+            target: "_self",
             icon: <Mail size={20} />,
         },
     ]
 
     const chatbotLinks = [
         {
-            href: `/manager/${slug}/chatbot`,
+            href: `/chatbot/${slug}`,
+            target: "_blank",
             label: "Chatbot",
             icon: <Bot size={20} />,
         },
         {
             href: `/manager/${slug}/chats`,
+            target: "_self",
             label: "Conversas",
             icon: <MessagesSquare size={20} />,
         },
         {
             href: `/manager/${slug}/messages`,
             label: "Mensagens",
+            target: "_self",
             icon: <MessageSquareText size={20} />,
         },
         {
             href: `/manager/${slug}/documents`,
             label: "Documentos",
+            target: "_self",
             icon: <Folder size={20} />,
         },
     ]
@@ -81,6 +88,7 @@ export function ManagerSidebar({ slug }: Props) {
                                     <SidebarMenuButton isActive={false} className="cursor-pointer">
                                         <Link
                                             href={link.href}
+                                            target={link.target}
                                             className="flex items-center gap-2 min-w-full"
                                         >
                                             {link.icon}
@@ -103,6 +111,7 @@ export function ManagerSidebar({ slug }: Props) {
                                     <SidebarMenuButton isActive={false} className="cursor-pointer">
                                         <Link
                                             href={link.href}
+                                            target={link.target}
                                             className="flex items-center gap-2 min-w-full"
                                         >
                                             {link.icon}
