@@ -10,9 +10,10 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { getOrganizationChats } from "@/http/chat/get-organization-chats.http";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { formatDate, getInitials } from "@/lib/utils";
+import { getOrganizationMessages } from "@/http/message/get-organization-messages.http";
+import { MessageAuthorTypeBadge } from "./message-author-type-badge";
 
 type Props = {
     params: {
@@ -20,19 +21,19 @@ type Props = {
     }
 }
 
-export default async function ChatsPage({ params: { slug } }: Props) {
+export default async function MessagesPage({ params: { slug } }: Props) {
 
-    const { chats } = await getOrganizationChats(slug)
+    const { messages } = await getOrganizationMessages(slug)
 
     return (
         <div className="w-full space-y-4">
             <header className="flex items-center justify-between">
                 <div>
                     <h2 className="text-3xl font-bold tracking-tight">
-                        Conversas
+                        Mensagens
                     </h2>
                     <p className="text-muted-foreground">
-                        Gerencie todas as conversas do chatbot da sua organização.
+                        Gerencie todas as mensagens do chatbot da sua organização.
                     </p>
                 </div>
                 <div></div>
@@ -62,41 +63,46 @@ export default async function ChatsPage({ params: { slug } }: Props) {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>ID</TableHead>
                                 <TableHead>Usuário</TableHead>
-                                <TableHead>Mensagens</TableHead>
+                                <TableHead>Conteúdo</TableHead>
+                                <TableHead>Autor</TableHead>
                                 <TableHead>Data de Criação</TableHead>
                                 <TableHead className="text-right">Ações</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {chats.map(chat => (
-                                <TableRow key={chat.id}>
+                            {messages.map(message => (
+                                <TableRow key={message.id}>
                                     <TableCell>
-                                        {chat.id}
-                                    </TableCell>
-                                    <TableCell className="font-medium text-left">
                                         <div className="flex items-center gap-2">
                                             <Avatar className="size-10">
+                                                <AvatarImage />
                                                 <AvatarFallback>
-                                                    {getInitials(chat.member.user.name)}
+                                                    {getInitials(message.chat.member.user.name)}
                                                 </AvatarFallback>
                                             </Avatar>
                                             <div className="flex flex-col">
                                                 <span>
-                                                    {chat.member.user.name}
+                                                    {message.chat.member.user.name}
                                                 </span>
                                                 <p className="text-xs text-muted-foreground truncate max-w-[250px]">
-                                                    {chat.member.user.email}
+                                                    {message.chat.member.user.email}
                                                 </p>
                                             </div>
                                         </div>
                                     </TableCell>
                                     <TableCell>
-                                        {chat.messagesCount} mensagens
+                                        <p className="text-xs text-wrap text-left w-[200px] line-clamp-2">
+                                            {message.content}
+                                        </p>
                                     </TableCell>
                                     <TableCell>
-                                        {formatDate(chat.createdAt)}
+                                        <MessageAuthorTypeBadge 
+                                            authorType={message.authorType}
+                                        />
+                                    </TableCell>
+                                    <TableCell>
+                                        {formatDate(message.createdAt)}
                                     </TableCell>
                                     <TableCell className="text-right">
                                         <DropdownMenu>

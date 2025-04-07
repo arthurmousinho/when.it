@@ -94,11 +94,31 @@ export class MessageService {
             where: {
                 chat: {
                     organization: {
-                        slug: organizationSlug
-                    }
-                }
+                        slug: organizationSlug,
+                    },
+                },
+            },
+            include: {
+                chat: {
+                    select: {
+                        member: {
+                            select: {
+                                user: {
+                                    select: {
+                                        name: true,
+                                        email: true,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+            orderBy: {
+                createdAt: 'asc',
             }
-        })
+        });
     }
+
 
 }

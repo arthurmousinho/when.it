@@ -5,7 +5,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, Settings, UserRound } from "lucide-react";
 import { auth } from "./auth";
 import { getInitials } from "@/lib/utils";
@@ -19,6 +19,7 @@ export async function ProfileButton() {
             <DropdownMenuTrigger asChild>
                 <div className="flex items-center gap-2 cursor-pointer">
                     <Avatar className="size-10">
+                        <AvatarImage />
                         <AvatarFallback>
                             {getInitials(user.name)}
                         </AvatarFallback>

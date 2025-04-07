@@ -17,7 +17,7 @@ export default function ManagerLayout({ children, params: { slug } }: ManagerLay
                 <ManagerHeader />
                 <main className="w-full h-full flex flex-row">
                     <ManagerSidebar slug={slug} />
-                    <SidebarInset className="overflow-y-auto">
+                    <SidebarInset className="overflow-y-auto h-screen">
                         <div className="p-4 w-full">
                             {children}
                         </div>
