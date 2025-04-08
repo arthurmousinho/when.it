@@ -120,5 +120,12 @@ export class MessageService {
         });
     }
 
+    public async getChatMessages(chatId: string) {
+        return await this.prismaService.message.findMany({
+            where: {
+                chatId
+            }
+        })
+    }
 
 }

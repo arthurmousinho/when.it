@@ -20,6 +20,14 @@ export class MessageController {
         return { messages }
     }
 
+    @Get('chat/:chatId')
+    public async getChatMessages(
+        @Param('chatId') chatId: string,
+    ) {
+        const messages = await this.messageService.getChatMessages(chatId);
+        return { messages }
+    }
+
     @Post('organization/:organizationSlug/prompt')
     public async sendPrompt(
         @Body() data: SendPromptMessageDTO,

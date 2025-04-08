@@ -3,6 +3,16 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@layer utilities {
+  .scrollbar-hidden {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+  }
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+}
 
 :root {
   --radius: 0.625rem;
@@ -59,7 +69,6 @@
     --chart-4: oklch(0.627 0.265 303.9);
     --chart-5: oklch(0.645 0.246 16.439);
 }
-
 
 
 @theme inline {

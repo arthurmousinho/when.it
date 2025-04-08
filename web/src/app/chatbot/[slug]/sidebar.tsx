@@ -46,9 +46,9 @@ export async function ChatbotSidebar({ slug }: Props) {
                         <SidebarMenu>
                             {chats.map(chat => (
                                 <SidebarMenuItem key={chat.id}>
-                                    <Link href={`chatbot/${slug}/${chat.id}`}>
+                                    <Link href={`/chatbot/${slug}/${chat.id}`}>
                                         <SidebarMenuButton className="cursor-pointer truncate text-muted-foreground">
-                                            {chat.organizationId}
+                                            {chat.id}
                                         </SidebarMenuButton>
                                     </Link>
                                 </SidebarMenuItem>
