@@ -1,6 +1,7 @@
 import logo from "@/assets/brand/horizontal-logo.svg"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import Link from "next/link"
 
 export function Header() {
     return (
@@ -8,11 +9,15 @@ export function Header() {
             <div className="w-full max-w-[1200px] flex justify-between items-center">
                 <Image src={logo} alt="when.it" width={150} height={100} />
                 <nav className="space-x-2">
-                    <Button>
-                        Sign Up
+                    <Button asChild>
+                        <Link href="/auth/signup">
+                            Criar conta
+                        </Link>
                     </Button>
                     <Button variant="secondary">
-                        Login
+                        <Link href="/auth/login">
+                            Login
+                        </Link>
                     </Button>
                 </nav>
             </div>

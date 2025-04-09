@@ -1,8 +1,6 @@
-"use client"
-
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Send, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
+import { WelcomePromptForm } from "./welcome-prompt-form";
 
 const examplePrompts = [
     "Como solicitar férias?",
@@ -11,7 +9,13 @@ const examplePrompts = [
     "Quais são os horários de expediente?",
 ];
 
-export default function ChatbotWelcomePage() {
+type Props = {
+    params: {
+        slug: string;
+    }
+}
+
+export default function ChatbotWelcomePage({ params: { slug } }: Props) {
     return (
         <div className="w-full h-dvh">
             <div className="flex flex-col items-center justify-center w-full h-dvh">
@@ -33,24 +37,7 @@ export default function ChatbotWelcomePage() {
                             </Button>
                         ))}
                     </div>
-
-                    <form
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                        }}
-                        className="flex flex-col items-center bg-white rounded-xl border border-gray-300 p-3"
-                    >
-                        <Textarea
-                            placeholder="Digite sua mensagem aqui..."
-                            className="w-full border-0 focus-visible:ring-0 focus-visible:ring-offset-0 px-2 h-[30px] resize-none shadow-none text-black"
-                        />
-                        <div className="w-full flex justify-end mt-2">
-                            <Button type="submit">
-                                <Send className="w-4 h-4 mr-2" />
-                                Enviar
-                            </Button>
-                        </div>
-                    </form>
+                    <WelcomePromptForm slug={slug} />
                 </div>
             </div>
         </div>

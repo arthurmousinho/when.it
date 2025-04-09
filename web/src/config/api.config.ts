@@ -10,7 +10,9 @@ export const api = ky.create({
             async (request) => {
                 let token: string | undefined
 
-                if (typeof window !== 'undefined') {
+                const isServerSide = typeof window !== 'undefined'
+
+                if (isServerSide) {
                     token = getCookie(AUTH_TOKEN_KEY) as string | undefined
                 } else {
                     const { cookies: getServerCookies } = await import('next/headers');
