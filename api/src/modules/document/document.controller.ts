@@ -10,9 +10,10 @@ import {
 import { DocumentService } from './document.service';
 import { UploadDocumentDTO } from './dtos/upload-document.dto';
 import { FormDataRequest } from 'nestjs-form-data';
-import { AuthGuard } from '../auth/auth.guard';
+import { AuthGuard } from '../auth/providers/auth.guard';
+import { OrganizationRoleGuard, OrganizationRoles } from '../auth/providers/organization-role.guard';
 
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, OrganizationRoleGuard)
 @Controller('documents')
 export class DocumentController {
 
@@ -21,6 +22,7 @@ export class DocumentController {
     ) { }
 
     @Post('organization/:organizationSlug/upload')
+    @OrganizationRoles('MANAGER')
     @FormDataRequest()
     public async upload(
         @Body() data: UploadDocumentDTO,
@@ -42,6 +44,7 @@ export class DocumentController {
     }
 
     @Get('organization/:organizationSlug')
+    @OrganizationRoles('MANAGER')
     public async getOrganizationDocuments(
         @Param('organizationSlug') organizationSlug: string
     ) {

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
-import { AuthGuard } from "../auth/auth.guard";
+import { AuthGuard } from "../auth/providers/auth.guard";
 import { MessageService } from "./message.service";
-import { DecodedToken } from "../auth/decoded-token.decorator";
+import { DecodedToken } from "../auth/providers/decoded-token.decorator";
 import { SendPromptMessageDTO } from "./dtos/send-message.dto";
 
 @UseGuards(AuthGuard)

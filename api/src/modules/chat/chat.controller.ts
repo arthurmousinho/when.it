@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ChatService } from './chat.service';
-import { DecodedToken } from '../auth/decoded-token.decorator';
-import { AuthGuard } from '../auth/auth.guard';
+import { DecodedToken } from '../auth/providers/decoded-token.decorator';
+import { AuthGuard } from '../auth/providers/auth.guard';
 
 @UseGuards(AuthGuard)
 @Controller('chats')

@@ -1,10 +1,11 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
 import { CreateOrganizationDTO } from "./dtos/create-organization.dto";
 import { OrganizationService } from "./organization.service";
-import { AuthGuard } from "../auth/auth.guard";
-import { DecodedToken } from "../auth/decoded-token.decorator";
+import { AuthGuard } from "../auth/providers/auth.guard";
+import { DecodedToken } from "../auth/providers/decoded-token.decorator";
+import { OrganizationRoles, OrganizationRoleGuard } from "../auth/providers/organization-role.guard";
 
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, OrganizationRoleGuard)
 @Controller('organizations')
 export class OrganizationController {
 
@@ -33,6 +34,7 @@ export class OrganizationController {
     }
 
     @Get(':slug/dashboard')
+    @OrganizationRoles('MANAGER')
     public async getDashboard(
         @Param('slug') slug: string
     ) {
