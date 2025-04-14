@@ -2,6 +2,7 @@ import { getChatMessages } from "@/http/message/get-chat-messages.http";
 import { ChatForm } from "./chat-form";
 import { ChatListing } from "./chat-listing";
 
+//  Type '{ chatId: string; slug: string; }' is missing the following properties from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]
 type Props = {
     params: {
         chatId: string;

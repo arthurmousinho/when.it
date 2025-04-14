@@ -8,8 +8,8 @@ import {
 import { AuthService } from './auth.service';
 import { LoginUserDTO } from './dtos/login-user.dto';
 import { SignUpUserDTO } from './dtos/signup-user.dto';
-import { DecodedToken } from './providers/decoded-token.decorator';
-import { AuthGuard } from './providers/auth.guard';
+import { DecodedToken } from './decoded-token.decorator';
+import { AuthGuard } from './guards/auth.guard';
 
 @Controller('auth')
 export class AuthController {

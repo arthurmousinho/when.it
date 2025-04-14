@@ -1,9 +1,10 @@
 import { Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ChatService } from './chat.service';
-import { DecodedToken } from '../auth/providers/decoded-token.decorator';
-import { AuthGuard } from '../auth/providers/auth.guard';
+import { DecodedToken } from '../auth/decoded-token.decorator';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import { OrganizationRoleGuard, OrganizationRoles } from '../auth/guards/organization-role.guard';
 
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, OrganizationRoleGuard)
 @Controller('chats')
 export class ChatController {
 
@@ -24,6 +25,7 @@ export class ChatController {
     }
 
     @Get('organization/:organizationSlug')
+    @OrganizationRoles('MANAGER')
     public async getOrganizationChats(
         @Param('organizationSlug') organizationSlug: string,
     ) {

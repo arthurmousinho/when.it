@@ -1,4 +1,4 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { MemberRole } from '@prisma/client';
 import { PrismaService } from 'src/database/prisma.service';
@@ -30,13 +30,13 @@ export class OrganizationRoleGuard implements CanActivate {
         const userId = request.user?.sub;
 
         if (!userId) {
-            throw new UnauthorizedException('Crendeciais inválidas')
+            throw new BadRequestException('Token inválido')
         }
 
-        const organizationSlug = request.params.slug;
+        const organizationSlug = request.params.organizationSlug ?? request.params.slug;
 
         if (!organizationSlug) {
-            throw new UnauthorizedException('Crendeciais inválidas')
+            throw new BadRequestException('Slug inválido da organização')
         }
 
         const member = await this.prismaService.member.findFirst({

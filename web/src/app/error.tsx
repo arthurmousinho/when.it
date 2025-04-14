@@ -7,26 +7,26 @@ import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
-import notFoundImage from "@/assets/illustrations/404.svg";
+import errorImage from "@/assets/illustrations/error.svg";
 
-export default function NotFoundPage() {
+export default function ErrorPage() {
     return (
         <div className="w-full h-dvh flex items-center justify-center">
             <div className="flex items-center justify-center w-full mt-20">
                 <main className="flex flex-row items-center gap-10">
                     <Image
-                        src={notFoundImage}
+                        src={errorImage}
                         width={250}
-                        alt="when.it"
+                        alt="Erro"
                         className="mx-auto"
                     />
                     <div className="space-y-4 max-w-[500px]">
                         <h3 className="text-xl font-semibold tracking-tight">
-                            404 | Página não encontrada
+                            Oops! Algo deu errado.
                         </h3>
                         <p className="text-muted-foreground text-base">
-                            Infelizmente não conseguimos encontrar a página que você está procurando.
-                            Verifique se a URL está correta ou tente novamente mais tarde.
+                            Não conseguimos processar sua solicitação. Verifique a URL ou tente novamente mais tarde.
+                            Estamos trabalhando para corrigir o problema o quanto antes.
                         </p>
                         <Link
                             className={cn(buttonVariants({ variant: "default" }))}

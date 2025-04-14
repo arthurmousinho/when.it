@@ -10,8 +10,8 @@ import {
 import { DocumentService } from './document.service';
 import { UploadDocumentDTO } from './dtos/upload-document.dto';
 import { FormDataRequest } from 'nestjs-form-data';
-import { AuthGuard } from '../auth/providers/auth.guard';
-import { OrganizationRoleGuard, OrganizationRoles } from '../auth/providers/organization-role.guard';
+import { AuthGuard } from '../auth/guards/auth.guard';
+import { OrganizationRoleGuard, OrganizationRoles } from '../auth/guards/organization-role.guard';
 
 @UseGuards(AuthGuard, OrganizationRoleGuard)
 @Controller('documents')
@@ -43,7 +43,7 @@ export class DocumentController {
         return { document };
     }
 
-    @Get('organization/:organizationSlug')
+    @Get('organization/:slug')
     @OrganizationRoles('MANAGER')
     public async getOrganizationDocuments(
         @Param('organizationSlug') organizationSlug: string

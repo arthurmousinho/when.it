@@ -1,7 +1,7 @@
 import { Controller, Get, Param, UseGuards } from "@nestjs/common";
 import { MemberService } from "./member.service";
-import { AuthGuard } from "../auth/providers/auth.guard";
-import { DecodedToken } from "../auth/providers/decoded-token.decorator";
+import { AuthGuard } from "../auth/guards/auth.guard";
+import { DecodedToken } from "../auth/decoded-token.decorator";
 
 @UseGuards(AuthGuard)
 @Controller('members')
