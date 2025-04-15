@@ -63,4 +63,12 @@ export class VectorStoreService {
         return matches
     }
 
+    public async delete(vectorId: string) {
+        const index = this.pinecone
+            .index(this.indexName, this.indexHost)
+            .namespace("default");
+
+        await index.deleteOne(vectorId);
+    }
+
 }

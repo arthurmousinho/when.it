@@ -1,6 +1,7 @@
 import {
     Body,
     Controller,
+    Delete,
     Get,
     Param,
     Patch,
@@ -58,6 +59,13 @@ export class DocumentController {
     ) {
         const document = await this.documentService.getById(documentId);
         return { document };
+    }
+
+    @Delete(':documentId')
+    public async delete(
+        @Param('documentId') documentId: string
+    ) {
+        await this.documentService.deleteDocument(documentId);
     }
 
 }

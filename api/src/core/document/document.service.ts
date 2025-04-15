@@ -27,7 +27,11 @@ export class DocumentService {
         }
 
         const fileId = randomUUID();
-        const fileUrl = await this.storageService.uploadFile({ file, fileId });
+        const fileUrl = await this.storageService.uploadFile({
+            file,
+            fileId,
+            bucket: 'DOCUMENTS'
+        });
 
         const document = await this.prismaService.document.create({
             data: {
@@ -112,6 +116,29 @@ export class DocumentService {
         });
 
         return updatedDocument;
+    }
+
+    public async deleteDocument(documentId: string) {
+        const document = await this.getById(documentId);
+
+        if (!document) {
+            throw new NotFoundException('Documento não encontrado');
+        }
+
+        await this.storageService.deleteFile({
+            fileId: document.fileId,
+            bucket: 'DOCUMENTS'
+        });
+
+        if (document.status === 'EMBEDDED') {
+            await this.vectorStoreService.delete(document.fileId);
+        }
+
+        await this.prismaService.document.delete({
+            where: {
+                id: documentId
+            }
+        });
     }
 
 }
