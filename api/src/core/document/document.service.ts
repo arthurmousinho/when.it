@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { PrismaService } from "src/infra/database/prisma.service";
-import { StorageService } from "./infra/storage.service";
 import { randomUUID } from "node:crypto";
+import { PrismaService } from "src/infra/database/prisma.service";
+import { StorageService } from "src/infra/storage/storage.service";
 import { OrganizationService } from "../organization/organization.service";
 import { AIModelService } from "src/infra/ai/ai-model.service";
 import { VectorStoreService } from "src/infra/ai/vector-store.service";
