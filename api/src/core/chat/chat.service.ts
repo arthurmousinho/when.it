@@ -45,7 +45,7 @@ export class ChatService {
         })
     }
 
-    public async getOrganizaionChats(organizationSlug: string) {
+    public async getOrganizationChats(organizationSlug: string) {
         const chats = await this.prismaService.chat.findMany({
             where: {
                 organization: {

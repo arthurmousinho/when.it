@@ -29,7 +29,7 @@ export class ChatController {
     public async getOrganizationChats(
         @Param('organizationSlug') organizationSlug: string,
     ) {
-        const chats = await this.chatService.getOrganizaionChats(organizationSlug);
+        const chats = await this.chatService.getOrganizationChats(organizationSlug);
         return { chats }
     }
 
