@@ -3,6 +3,7 @@ import { PrismaService } from "src/infra/database/prisma.service";
 import { UserService } from "../user/user.service";
 import { subDays, startOfDay } from 'date-fns';
 import type { CreateOrganizationDTO } from "./dtos/create-organization.dto";
+import { generateSlug } from "src/shared/generate-slug";
 
 @Injectable()
 export class OrganizationService {
@@ -21,7 +22,7 @@ export class OrganizationService {
             throw new NotFoundException('Usuário não encontrado');
         }
 
-        const slug = name.toLowerCase().replace(/ /g, '-');
+        const slug = generateSlug(name);
 
         const organizationAlreadyExistsWithSlug = await this.prismaService.organization.findUnique({
             where: {
