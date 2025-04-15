@@ -13,12 +13,12 @@ type ManagerLayoutProps = {
 export default function ManagerLayout({ children, params: { slug } }: ManagerLayoutProps) {
     return (
         <SidebarProvider>
-            <div className="flex flex-col w-full h-screen overflow-hidden bg-slate-50">
+            <div className="flex flex-col w-full h-screen overflow-hidden">
                 <ManagerHeader />
-                <main className="w-full h-full flex flex-row">
+                <main className="w-full h-full flex flex-row ">
                     <ManagerSidebar slug={slug} />
                     <SidebarInset className="overflow-y-auto h-screen">
-                        <div className="p-4 w-full">
+                        <div className="p-4 w-full bg-slate-50 h-full">
                             {children}
                         </div>
                     </SidebarInset>

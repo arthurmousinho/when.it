@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -28,8 +30,10 @@ import { getOrganizationDocuments } from "@/http/documents/get-organization-docu
 import { formatBytes, formatDate } from "@/lib/utils";
 import { EmbedDocumentConfirmation } from "./embed-document-confirmation";
 import { DocumentStatusBadge } from "./document-status-badge";
-import type { DocumentType } from "@/@types/document";
 import { IconCard } from "@/components/icon-card";
+import type { DocumentType } from "@/@types/document";
+
+import documentsImage from "@/assets/illustrations/documents.svg";
 
 function getFileIcon(type: DocumentType) {
     switch (type) {
@@ -49,6 +53,30 @@ type Props = {
 export default async function DocumentsPage({ params: { slug } }: Props) {
 
     const { documents } = await getOrganizationDocuments(slug);
+
+    if (documents.length === 0) {
+        return (
+            <div className="flex items-center justify-center w-full mt-20">
+                <main className="flex flex-row items-center gap-10">
+                    <Image
+                        src={documentsImage}
+                        width={250}
+                        alt="No organizations"
+                        className="mx-auto"
+                    />
+                    <div className="space-y-4 max-w-[500px]">
+                        <h3 className="text-xl font-semibold tracking-tight">
+                            Nenhum documento encontrado
+                        </h3>
+                        <p className="text-muted-foreground text-base">
+                            Você ainda não possui nenhum documento enviado. Faça o upload de um documento e integre-o para ser utilizado no chatbot da sua organização
+                        </p>
+                        <UploadDocumentForm />
+                    </div>
+                </main>
+            </div>
+        )
+    }
 
     return (
         <div className="w-full space-y-4">

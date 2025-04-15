@@ -51,7 +51,7 @@ export function OrganizationCard({
                     </Badge>
                 </CardHeader>
                 <CardContent className="pt-2 px-3">
-                    <CardDescription className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                    <CardDescription className="text-sm text-muted-foreground leading-relaxed line-clamp-2 h-[45.5]">
                         {description}
                     </CardDescription>
                 </CardContent>
