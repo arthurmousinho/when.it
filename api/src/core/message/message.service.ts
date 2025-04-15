@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
-import { PrismaService } from "src/database/prisma.service";
+import { PrismaService } from "src/infra/database/prisma.service";
 import { ChatService } from "../chat/chat.service";
 import { OrganizationService } from "../organization/organization.service";
-import { AIService } from "../ai/ai.service";
+import { AIService } from "src/infra/ai/ai.service";
 import { VectorService } from "../document/infra/vector.service";
 
 import type { SendPromptMessageDTO } from "./dtos/send-message.dto";

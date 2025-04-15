@@ -1,7 +1,7 @@
 import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { compare, hash } from "bcrypt";
 import { JwtService } from '@nestjs/jwt';
-import { UserService } from "../user/user.service";
+import { UserService } from "../../core/user/user.service";
 import type { LoginUserDTO } from "./dtos/login-user.dto";
 import type { SignUpUserDTO } from "./dtos/signup-user.dto";
 
@@ -74,7 +74,7 @@ export class AuthService {
                 email: user.email
             }
         }
-        
+
     }
 
 }

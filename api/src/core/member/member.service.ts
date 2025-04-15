@@ -1,6 +1,6 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { OrganizationService } from "../organization/organization.service";
-import { PrismaService } from "src/database/prisma.service";
+import { PrismaService } from "src/infra/database/prisma.service";
 import type { CreateMemberDTO } from "./dtos/create-member.dto";
 
 @Injectable()
@@ -68,7 +68,7 @@ export class MemberService {
 
         return await this.prismaService.member.findFirst({
             where: {
-                userId, 
+                userId,
                 organization: {
                     slug: organizationSlug
                 }

@@ -1,5 +1,5 @@
 import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
-import { PrismaService } from "src/database/prisma.service";
+import { PrismaService } from "src/infra/database/prisma.service";
 import { UserService } from "../user/user.service";
 import { subDays, startOfDay } from 'date-fns';
 import type { CreateOrganizationDTO } from "./dtos/create-organization.dto";

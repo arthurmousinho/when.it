@@ -1,6 +1,6 @@
 import { ConflictException, Injectable, NotFoundException, UnauthorizedException, UnprocessableEntityException } from "@nestjs/common";
-import { EmailService } from "../email/email.service";
-import { PrismaService } from "src/database/prisma.service";
+import { EmailService } from "src/infra/email/email.service";
+import { PrismaService } from "src/infra/database/prisma.service";
 import { OrganizationService } from "../organization/organization.service";
 import { MemberService } from "../member/member.service";
 import { UserService } from "../user/user.service";

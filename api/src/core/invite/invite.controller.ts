@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
 import { InviteService } from "./invite.service";
 import { CreateInviteDTO } from "./dtos/create-invite.dto";
-import { DecodedToken } from "../auth/decoded-token.decorator";
 import { AuthGuard } from "../auth/guards/auth.guard";
+import { DecodedToken } from "../auth/decoded-token.decorator";
 
 @Controller('invites')
 export class InviteController {
