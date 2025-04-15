@@ -6,6 +6,8 @@ import {
     Mail,
     MessagesSquare,
     MessageSquareText,
+    Building,
+    Settings,
 } from "lucide-react"
 import {
     Sidebar,
@@ -25,14 +27,16 @@ type Props = {
 
 export function ManagerSidebar({ slug }: Props) {
 
-
-    const organizationLinks = [
+    const mainLinks = [
         {
             href: `/manager/${slug}`,
             label: "Dashboard",
             target: "_self",
             icon: <Gauge size={20} />,
         },
+    ]
+
+    const organizationLinks = [
         {
             href: `/manager/${slug}/members`,
             label: "Membros",
@@ -44,6 +48,12 @@ export function ManagerSidebar({ slug }: Props) {
             label: "Convites",
             target: "_self",
             icon: <Mail size={20} />,
+        },
+        {
+            href: `/manager/${slug}/invites`,
+            label: "Organização",
+            target: "_self",
+            icon: <Building size={20} />,
         },
     ]
 
@@ -72,6 +82,12 @@ export function ManagerSidebar({ slug }: Props) {
             target: "_self",
             icon: <Folder size={20} />,
         },
+        {
+            href: `/manager/${slug}/documents`,
+            label: "Configurações",
+            target: "_self",
+            icon: <Settings size={20} />,
+        },
     ]
 
     return (
@@ -80,6 +96,29 @@ export function ManagerSidebar({ slug }: Props) {
                 <SidebarGroup>
                     <SidebarGroupLabel>
                         Principal
+                    </SidebarGroupLabel>
+                    <SidebarGroupContent>
+                        <SidebarMenu>
+                            {mainLinks.map((link, index) => (
+                                <SidebarMenuItem key={index}>
+                                    <SidebarMenuButton isActive={false} className="cursor-pointer">
+                                        <Link
+                                            href={link.href}
+                                            target={link.target}
+                                            className="flex items-center gap-2 min-w-full"
+                                        >
+                                            {link.icon}
+                                            {link.label}
+                                        </Link>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                            ))}
+                        </SidebarMenu>
+                    </SidebarGroupContent>
+                </SidebarGroup>
+                <SidebarGroup>
+                    <SidebarGroupLabel>
+                        Organização
                     </SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>

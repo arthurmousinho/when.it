@@ -26,7 +26,7 @@ export function OrganizationCard({
     chatsCount
 }: OrganizationCardProps) {
     return (
-        <Link href={role === 'MANAGER' ? `/manager/${slug}` : `/member/${slug}`}>
+        <Link href={role === 'MANAGER' ? `/manager/${slug}` : `/chatbot/${slug}`}>
             <Card className="w-full overflow-hidden transition-all duration-300 gap-0 pt-0 hover:shadow-md cursor-pointer">
                 <div
                     className="h-24 w-full bg-cover bg-center"
