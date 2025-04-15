@@ -1,12 +1,15 @@
 import { Module } from "@nestjs/common";
-import { AIService } from "./ai.service";
+import { AIModelService } from "./ai-model.service";
+import { VectorStoreService } from "./vector-store.service";
 
 @Module({
     providers: [
-        AIService
+        AIModelService,
+        VectorStoreService
     ],
     exports: [
-        AIService
+        AIModelService,
+        VectorStoreService
     ]
 })
 

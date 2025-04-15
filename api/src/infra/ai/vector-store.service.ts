@@ -20,7 +20,7 @@ type VectorQuery = {
 }
 
 @Injectable()
-export class VectorService {
+export class VectorStoreService {
 
     private indexName = process.env.PINECONE_INDEX || '';
     private indexHost = process.env.PINECONE_HOST || '';

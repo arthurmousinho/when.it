@@ -2,8 +2,8 @@ import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/co
 import { PrismaService } from "src/infra/database/prisma.service";
 import { ChatService } from "../chat/chat.service";
 import { OrganizationService } from "../organization/organization.service";
-import { AIService } from "src/infra/ai/ai.service";
-import { VectorService } from "../document/infra/vector.service";
+import { AIModelService } from "src/infra/ai/ai-model.service";
+import { VectorStoreService } from "src/infra/ai/vector-store.service";
 
 import type { SendPromptMessageDTO } from "./dtos/send-message.dto";
 import type { CreateMessageDTO } from "./dtos/create-message.dto";
@@ -15,8 +15,8 @@ export class MessageService {
         private readonly prismaService: PrismaService,
         private readonly chatService: ChatService,
         private readonly organizationService: OrganizationService,
-        private readonly aiService: AIService,
-        private readonly vectorService: VectorService
+        private readonly aiModelService: AIModelService,
+        private readonly vectorStoreService: VectorStoreService
     ) { }
 
     public async createMessage(data: CreateMessageDTO) {
@@ -59,16 +59,16 @@ export class MessageService {
             authorType: "MEMBER"
         });
 
-        const questionEmbedding = await this.aiService.generateEmbedding(content);
+        const questionEmbedding = await this.aiModelService.generateEmbedding(content);
 
-        const vectorMatches = await this.vectorService.query({
+        const vectorMatches = await this.vectorStoreService.query({
             vector: questionEmbedding.embedding,
             organizationId: org.id,
         });
 
         const vectorMatchesChunks = vectorMatches.map(v => v.metadata?.chunks) as string[];
 
-        const promptResponse = await this.aiService.sendPrompt({
+        const promptResponse = await this.aiModelService.sendPrompt({
             question: content,
             organizationName: org?.name,
             organizationDescription: org?.description,

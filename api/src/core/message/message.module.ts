@@ -4,7 +4,6 @@ import { MessageService } from "./message.service";
 import { OrganizationModule } from "../organization/organization.module";
 import { ChatModule } from "../chat/chat.module";
 import { MessageController } from "./message.controller";
-import { DocumentModule } from "../document/document.module";
 import { AIModule } from "src/infra/ai/ai.module";
 
 @Module({
@@ -12,7 +11,6 @@ import { AIModule } from "src/infra/ai/ai.module";
         OrganizationModule,
         ChatModule,
         AIModule,
-        DocumentModule
     ],
     controllers: [
         MessageController

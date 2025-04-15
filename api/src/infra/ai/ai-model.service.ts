@@ -10,7 +10,7 @@ type Prompt = {
 };
 
 @Injectable()
-export class AIService {
+export class AIModelService {
 
     private openai: OpenAI;
 
@@ -67,7 +67,6 @@ export class AIService {
             chunks: chunks,
             embedding: response.data[0].embedding,
         };
-
     }
 
 }

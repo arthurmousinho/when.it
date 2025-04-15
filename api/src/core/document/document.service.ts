@@ -2,9 +2,9 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "src/infra/database/prisma.service";
 import { StorageService } from "./infra/storage.service";
 import { randomUUID } from "node:crypto";
-import { VectorService } from "./infra/vector.service";
 import { OrganizationService } from "../organization/organization.service";
-import { AIService } from "src/infra/ai/ai.service";
+import { AIModelService } from "src/infra/ai/ai-model.service";
+import { VectorStoreService } from "src/infra/ai/vector-store.service";
 import type { UploadDocumentDTO } from "./dtos/upload-document.dto";
 
 @Injectable()
@@ -13,9 +13,9 @@ export class DocumentService {
     constructor(
         private readonly prismaService: PrismaService,
         private readonly storageService: StorageService,
-        private readonly vectorService: VectorService,
+        private readonly vectorStoreService: VectorStoreService,
         private readonly organizationService: OrganizationService,
-        private readonly aiService: AIService
+        private readonly aiModelService: AIModelService
     ) { }
 
     public async upload(data: UploadDocumentDTO & { organizationSlug: string }) {
@@ -86,9 +86,9 @@ export class DocumentService {
 
         const fileContent = await this.storageService.getFileContent(document.fileUrl);
 
-        const { embedding, chunks } = await this.aiService.generateEmbedding(fileContent);
+        const { embedding, chunks } = await this.aiModelService.generateEmbedding(fileContent);
 
-        await this.vectorService.upsert(
+        await this.vectorStoreService.upsert(
             [{
                 id: document.fileId,
                 values: embedding,
