@@ -22,12 +22,12 @@ export class DocumentController {
         private readonly documentService: DocumentService
     ) { }
 
-    @Post('organization/:organizationSlug/upload')
+    @Post('organization/:slug/upload')
     @OrganizationRoles('MANAGER')
     @FormDataRequest()
     public async upload(
         @Body() data: UploadDocumentDTO,
-        @Param('organizationSlug') organizationSlug: string
+        @Param('slug') organizationSlug: string
     ) {
         const document = await this.documentService.upload({
             ...data,
@@ -36,7 +36,8 @@ export class DocumentController {
         return { document };
     }
 
-    @Post(':documentId/embed')
+    @Post('organization/:slug/:documentId/embed')
+    @OrganizationRoles('MANAGER')
     public async embbed(
         @Param('documentId') documentId: string
     ) {
@@ -53,15 +54,17 @@ export class DocumentController {
         return { documents };
     }
 
-    @Get(':documentId')
-    public async getById(
+    @Get('organization/:slug/:documentId')
+    @OrganizationRoles('MANAGER')
+    public async getDetails(
         @Param('documentId') documentId: string
     ) {
         const document = await this.documentService.getById(documentId);
         return { document };
     }
 
-    @Delete(':documentId')
+    @Delete('organization/:slug/:documentId')
+    @OrganizationRoles('MANAGER')
     public async delete(
         @Param('documentId') documentId: string
     ) {
