@@ -17,9 +17,16 @@ type Response = {
     }
 }
 
-export async function getDocument(documentId: string) {
+type Resquest = {
+    organizationSlug: string;
+    documentId: string;
+}
+
+export async function getDocument(request: Resquest) {
+    const { organizationSlug, documentId } = request;
+
     const result = await api.get(
-        `documents/${documentId}`
+        `documents/organization/${organizationSlug}/${documentId}`
     ).json<Response>();
     return result;
 }

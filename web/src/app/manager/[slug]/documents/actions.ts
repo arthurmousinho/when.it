@@ -47,11 +47,15 @@ export async function uploadDocumentAction(data: UploadDocumentActionData): Prom
 
 export type EmbedDocumentActionData = {
     documentId: string;
+    organizationSlug: string;
 }
 
 export async function embedDocumentAction(data: EmbedDocumentActionData): Promise<FormActionResponse> {
     try {
-        await embedDocument(data.documentId)
+        await embedDocument({
+            documentId: data.documentId,
+            organizationSlug: data.organizationSlug
+        })
 
         return {
             message: 'Documento integrado com sucesso',

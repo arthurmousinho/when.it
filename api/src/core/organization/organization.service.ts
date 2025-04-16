@@ -114,7 +114,7 @@ export class OrganizationService {
 
         const sevenDaysAgo = startOfDay(subDays(new Date(), 6));
 
-        const [counts, messageBreakdown, weeklyUsageRaw] = await Promise.all([
+        const [counts, weeklyUsageRaw, totalFileSize, recentMessages] = await Promise.all([
             this.prismaService.organization.findUnique({
                 where: { id: org.id },
                 select: {
@@ -124,16 +124,6 @@ export class OrganizationService {
                             documents: true,
                             chats: true,
                         },
-                    },
-                },
-            }),
-
-            this.prismaService.message.groupBy({
-                by: ['authorType'],
-                _count: true,
-                where: {
-                    chat: {
-                        organizationId: org.id,
                     },
                 },
             }),
@@ -153,12 +143,50 @@ export class OrganizationService {
                     createdAt: 'asc',
                 },
             }),
+
+            this.prismaService.document.aggregate({
+                where: {
+                    organizationId: org.id,
+                },
+                _sum: {
+                    fileSize: true,
+                },
+            }),
+
+            this.prismaService.message.findMany({
+                where: {
+                    chat: {
+                        organizationId: org.id,
+                    },
+                    authorType: 'MEMBER'
+                },
+                select: {
+                    id: true,
+                    content: true,
+                    authorType: false,
+                    createdAt: true,
+                    chat: {
+                        select: {
+                            id: true,
+                            member: {
+                                select: {
+                                    user: {
+                                        select: {
+                                            name: true,
+                                            email: true,
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                    },
+                },
+                orderBy: {
+                    createdAt: 'desc',
+                },
+                take: 5,
+            }),
         ]);
-
-        const fromMemberCount = messageBreakdown.find(m => m.authorType === 'MEMBER')?._count || 0;
-        const fromAICount = messageBreakdown.find(m => m.authorType === 'AI')?._count || 0;
-
-        const totalMessages = fromMemberCount + fromAICount;
 
         const usageMap = new Map<string, number>();
         for (let i = 0; i < 7; i++) {
@@ -191,6 +219,14 @@ export class OrganizationService {
             }),
         ]);
 
+        const totalMessages = await this.prismaService.message.count({
+            where: {
+                chat: {
+                    organizationId: org.id,
+                },
+            },
+        });
+
         return {
             organization: {
                 id: org.id,
@@ -201,21 +237,20 @@ export class OrganizationService {
                 totalCount: counts?._count.documents,
                 uploadedCount,
                 embeddedCount,
+                totalFileSize: totalFileSize._sum.fileSize || 0
             },
             members: {
                 totalCount: counts?._count.members,
             },
             messages: {
-                total: totalMessages,
-                fromMemberCount,
-                fromAICount,
+                totalCount: totalMessages,
+                recentMemberMessages: recentMessages, 
             },
             chats: {
-                total: counts?._count.chats,
+                totalCount: counts?._count.chats,
             },
             weeklyUsage,
         };
     }
-
 
 }

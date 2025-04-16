@@ -16,6 +16,7 @@ import {
 import { embedDocumentAction, type EmbedDocumentActionData } from "./actions";
 import { useFormState } from "@/hooks/use-form-state";
 import { Button } from "@/components/ui/button";
+import { useParams } from "next/navigation";
 
 type Props = {
     documentId: string;
@@ -23,6 +24,9 @@ type Props = {
 };
 
 export function EmbedDocumentConfirmation({ children, documentId }: Props) {
+
+    const { slug } = useParams() as { slug: string };
+
     const [isOpen, setIsOpen] = useState(false);
 
     const { handleSubmit, isLoading } = useFormState<EmbedDocumentActionData>({
@@ -69,7 +73,7 @@ export function EmbedDocumentConfirmation({ children, documentId }: Props) {
                         onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            handleSubmit({ documentId });
+                            handleSubmit({ documentId, organizationSlug: slug });
                         }}
                         asChild
                     >

@@ -10,13 +10,17 @@ import { Separator } from "@/components/ui/separator"
 
 type Props = {
     params: {
-        id: string
+        id: string;
+        slug: string;
     }
 }
 
-export default async function DocumentPage({ params: { id } }: Props) {
+export default async function DocumentPage({ params: { id, slug } }: Props) {
 
-    const { document } = await getDocument(id)
+    const { document } = await getDocument({
+        documentId: id,
+        organizationSlug: slug
+    })
 
     return (
         <div className="w-full">
