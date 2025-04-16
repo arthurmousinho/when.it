@@ -32,6 +32,7 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function ChatWeeklyUsage({ weeklyUsage }: Props) {
+    
     const chartData = weeklyUsage.map(item => ({
         day: getWeekdayShort(item.date),
         count: item.messagesCount,

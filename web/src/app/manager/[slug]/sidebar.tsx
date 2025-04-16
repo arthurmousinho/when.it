@@ -50,8 +50,8 @@ export function ManagerSidebar({ slug }: Props) {
             icon: <Mail size={20} />,
         },
         {
-            href: `/manager/${slug}/invites`,
-            label: "Organização",
+            href: `/manager/${slug}/org`,
+            label: "Minha Organização",
             target: "_self",
             icon: <Building size={20} />,
         },
@@ -124,11 +124,11 @@ export function ManagerSidebar({ slug }: Props) {
                         <SidebarMenu>
                             {organizationLinks.map((link, index) => (
                                 <SidebarMenuItem key={index}>
-                                    <SidebarMenuButton isActive={false} className="cursor-pointer">
+                                    <SidebarMenuButton asChild className="cursor-pointer">
                                         <Link
                                             href={link.href}
                                             target={link.target}
-                                            className="flex items-center gap-2 min-w-full"
+                                            className="flex items-center gap-2 min-w-full min-h-full"
                                         >
                                             {link.icon}
                                             {link.label}

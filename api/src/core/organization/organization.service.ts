@@ -51,6 +51,26 @@ export class OrganizationService {
         return { organization };
     }
 
+    public async update(data: CreateOrganizationDTO & { organizationSlug: string }) {
+        const { name, description, organizationSlug } = data;
+
+        const org = await this.getBySlug(organizationSlug);
+
+        if (!org) {
+            throw new NotFoundException('Organização não encontrada');
+        }
+
+        return await this.prismaService.organization.update({
+            where: {
+                slug: organizationSlug
+            },
+            data: {
+                name,
+                description
+            }
+        })
+    }
+
     public async getAllByUserId(userId: string) {
         const organizations = await this.prismaService.organization.findMany({
             where: {
@@ -90,10 +110,6 @@ export class OrganizationService {
                 slug
             }
         })
-
-        if (!organization) {
-            return null;
-        }
 
         return organization;
     }
@@ -244,7 +260,7 @@ export class OrganizationService {
             },
             messages: {
                 totalCount: totalMessages,
-                recentMemberMessages: recentMessages, 
+                recentMemberMessages: recentMessages,
             },
             chats: {
                 totalCount: counts?._count.chats,

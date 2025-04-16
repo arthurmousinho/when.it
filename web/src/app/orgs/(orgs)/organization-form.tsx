@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { createOrganizationAction } from "./actions";
+import { createOrganizationAction, updateOrganizationAction } from "./actions";
 import { useFormState } from "@/hooks/use-form-state";
 import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
@@ -29,20 +29,33 @@ const formSchema = z.object({
         .max(200, { message: 'Descrição da organização deve ter no máximo 200 caracteres' }),
 })
 
-export function OrganizationForm() {
+type Props = {
+    isUpdating?: boolean;
+    data?: { name: string, description: string, organizationSlug: string };
+}
+
+export function OrganizationForm({ data, isUpdating }: Props) {
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: '',
-            description: ''
+            name: data?.name ?? '',
+            description: data?.description ?? ''
         },
     })
 
     type FormData = z.infer<typeof formSchema>;
 
     const { handleSubmit, isLoading } = useFormState<FormData>({
-        action: createOrganizationAction,
+        action: (formData) => {
+            if (isUpdating && data?.organizationSlug) {
+                return updateOrganizationAction({
+                    ...formData,
+                    organizationSlug: data.organizationSlug
+                });
+            }
+            return createOrganizationAction(formData);
+        },
         onSuccess: (sucessMessage) => {
             form.reset();
             toast.success(sucessMessage);
@@ -66,7 +79,10 @@ export function OrganizationForm() {
                         <FormItem>
                             <FormLabel>Nome</FormLabel>
                             <FormControl>
-                                <Input placeholder="Acme Inc." {...field} />
+                                <Input
+                                    placeholder="Acme Inc."
+                                    {...field}
+                                />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -79,10 +95,10 @@ export function OrganizationForm() {
                         <FormItem>
                             <FormLabel>Descrição</FormLabel>
                             <FormControl>
-                                <Textarea 
+                                <Textarea
                                     className="resize-none h-[100px]"
-                                    placeholder="Descreva a atividade da sua organização" 
-                                    {...field} 
+                                    placeholder="Descreva a atividade da sua organização"
+                                    {...field}
                                 />
                             </FormControl>
                             <FormMessage />

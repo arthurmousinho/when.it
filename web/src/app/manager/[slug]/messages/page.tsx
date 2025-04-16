@@ -36,7 +36,6 @@ export default async function MessagesPage({ params: { slug } }: Props) {
                         Gerencie todas as mensagens do chatbot da sua organização.
                     </p>
                 </div>
-                <div></div>
             </header>
             <header className="flex flex-col gap-4 md:flex-row md:items-center w-full">
                 <div className="relative flex-1">
