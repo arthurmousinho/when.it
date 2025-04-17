@@ -1,36 +1,60 @@
-'use client'
+"use client"
 
-import { useRouter } from 'next/navigation'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { ChevronsUpDown } from "lucide-react"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Button } from "@/components/ui/button"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import type { MemberRole } from '@/@types/member'
+import type { MemberRole } from "@/@types/member"
 
 type Props = {
     currentOrganizationSlug: string
     organizations: Array<{
         name: string
-        slug: string,
+        slug: string
         role: MemberRole
     }>
 }
 
 export function OrganizationSelect({ currentOrganizationSlug, organizations }: Props) {
+    const router = useRouter()
+    const [selectedOrg, setSelectedOrg] = useState(() => {
+        return organizations.find((org) => org.slug === currentOrganizationSlug) || organizations[0]
+    })
 
-    const router = useRouter();
-
-    function handleValueChange(slug: string) {
-        const memberRole = organizations.find(org => org.slug === slug)?.role;
-        router.push(memberRole === 'MANAGER' ? `/manager/${slug}` : `/chatbot/${slug}`);
+    function handleOrganizationSelect(slug: string) {
+        const organization = organizations.find((org) => org.slug === slug)
+        if (organization) {
+            setSelectedOrg(organization)
+            const memberRole = organization.role
+            router.push(memberRole === "MANAGER" ? `/manager/${slug}` : `/chatbot/${slug}`)
+        }
     }
 
     return (
-        <Select defaultValue={currentOrganizationSlug} onValueChange={handleValueChange}>
-            <SelectTrigger className="w-[200px] font-medium">
-                <SelectValue placeholder="Selecione uma organização" />
-            </SelectTrigger>
-            <SelectContent className="max-h-[300px]">
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild className="border-none shadow-none outline-none text-slate-900">
+                <Button variant="outline" className="w-[220px] justify-between font-medium">
+                    <div className="flex items-center gap-2 truncate">
+                        <Avatar className="h-5 w-5">
+                            <AvatarImage
+                                src={`https://avatar.vercel.sh/${selectedOrg.slug}`}
+                                alt={selectedOrg.name}
+                            />
+                        </Avatar>
+                        <span className="truncate">{selectedOrg.name}</span>
+                    </div>
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-[200px] max-h-[300px] overflow-y-auto">
                 {organizations.map((org) => (
-                    <SelectItem key={org.slug} value={org.slug} className="py-2 cursor-pointer">
+                    <DropdownMenuItem
+                        key={org.slug}
+                        className="py-2 cursor-pointer"
+                        onClick={() => handleOrganizationSelect(org.slug)}
+                    >
                         <div className="flex items-center gap-2 w-full">
                             <Avatar className="h-6 w-6">
                                 <AvatarImage src={`https://avatar.vercel.sh/${org.slug}`} alt={org.name} />
@@ -40,9 +64,9 @@ export function OrganizationSelect({ currentOrganizationSlug, organizations }: P
                             </Avatar>
                             <span className="font-medium truncate">{org.name}</span>
                         </div>
-                    </SelectItem>
+                    </DropdownMenuItem>
                 ))}
-            </SelectContent>
-        </Select>
+            </DropdownMenuContent>
+        </DropdownMenu>
     )
 }

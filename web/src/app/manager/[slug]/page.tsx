@@ -26,7 +26,7 @@ export default async function OrganizationDashboard({ params: { slug } }: Props)
         <div className="w-full space-y-4">
             <header className="flex items-center justify-between">
                 <h2 className="text-3xl font-bold tracking-tight">
-                    Dasboard - {dashboard.organization.name}
+                    Dashboard - {dashboard.organization.name}
                 </h2>
                 <InviteMemberDialog />
             </header>

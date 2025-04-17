@@ -2,7 +2,6 @@ import { OrganizationForm } from "@/app/orgs/(orgs)/organization-form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getOrganization } from "@/http/organization/get-organization.http";
 import { formatDate } from "@/lib/utils";
-import { deleteOrganizationAction } from "./actions";
 import { DeleteOrganizationDialog } from "./delete-organization-dialog";
 
 type Props = {
@@ -14,10 +13,6 @@ type Props = {
 export default async function OrganizationPage({ params: { slug } }: Props) {
 
     const { organization } = await getOrganization(slug)
-
-    function handleDeleteOrganization() {
-        deleteOrganizationAction(organization.slug);
-    }
 
     return (
         <div className="space-y-4">
