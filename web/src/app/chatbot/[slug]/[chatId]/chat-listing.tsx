@@ -24,7 +24,7 @@ export function ChatListing({ messages }: Props) {
 
     return (
         <div className="flex-1 flex justify-center overflow-hidden">
-            <main className="w-full max-w-[70%] flex flex-col gap-4 overflow-y-auto scrollbar-hidden">
+            <main className="w-full max-w-[70%] flex flex-col gap-4 overflow-y-auto scrollbar-hide">
                 {messages.map(msg => (
                     <ChatMessage
                         key={msg.id}

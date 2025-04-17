@@ -28,7 +28,7 @@ const formSchema = z.object({
     name: z
         .string()
         .min(3, { message: "O nome do documento deve ter pelo menos 3 caracteres." })
-        .max(20, { message: "O nome do documento deve ter no máximo 20 caracteres." }),
+        .max(50, { message: "O nome do documento deve ter no máximo 50 caracteres." }),
     description: z
         .string()
         .min(10, { message: "A descrição deve ter pelo menos 10 caracteres." })

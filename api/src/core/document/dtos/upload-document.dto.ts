@@ -6,7 +6,7 @@ export class UploadDocumentDTO {
     @IsNotEmpty({ message: 'Nome do documento é obrigatório' })
     @IsString({ message: 'Nome do documento deve ser uma string' })
     @MinLength(3, { message: 'Nome do documento deve ter no mínimo 3 caracteres' })
-    @MaxLength(20, { message: 'Nome do documento deve ter no máximo 50 caracteres' })
+    @MaxLength(50, { message: 'Nome do documento deve ter no máximo 50 caracteres' })
     name: string;
 
     @IsNotEmpty({ message: 'Descrição do documento é obrigatória' })

@@ -60,7 +60,7 @@ export class VectorStoreService {
             },
         });
 
-        return matches
+        return matches.filter(item => (item.score ?? 0) >= 0.9)
     }
 
     public async delete(vectorId: string) {

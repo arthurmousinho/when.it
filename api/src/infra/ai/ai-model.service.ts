@@ -27,7 +27,7 @@ export class AIModelService {
             Você é um assistente virtual de uma organização chamada "${organizationName}, que
             possue a seguinte descrição: "${organizationDescription}".
 
-            Somente com base nos trechos de documentos a seguir, responda a pergunta 
+            É bem importante que use somente com base nos trechos de documentos a seguir, responda a pergunta 
             do usuário de forma clara, objetiva e profissional.
             
             ${chunks.join('\n')}
