@@ -84,18 +84,32 @@ export function InviteMemberForm() {
                                 defaultValue={field.value}
                             >
                                 <FormControl>
-                                    <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Selecione um cargo" />
+                                    <SelectTrigger className="w-full ">
+                                        <SelectValue placeholder="Selecione um cargo"  />
                                     </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                    <SelectItem value="MEMBER">
-                                        <UserRound />
-                                        Membro
+                                    <SelectItem value="MEMBER" className="p-2">
+                                        <div className="flex flex-row gap-2 items-center">
+                                            <UserRound className="h-4 w-4" />
+                                            <div className="flex flex-col gap-0 items-start">
+                                                <span className="font-medium">Membro</span>
+                                                <p className="text-xs text-muted-foreground">
+                                                    Pode acessar apenas o chatbot da organização
+                                                </p>
+                                            </div>
+                                        </div>
                                     </SelectItem>
-                                    <SelectItem value="MANAGER">
-                                        <ShieldUser />
-                                        Gerente
+                                    <SelectItem value="MANAGER" className="p-2">
+                                        <div className="flex flex-row gap-2 items-center">
+                                            <ShieldUser className="h-4 w-4" />
+                                            <div className="flex flex-col gap-0 items-start">
+                                                <span className="font-medium">Gerente</span>
+                                                <p className="text-xs text-muted-foreground">
+                                                    Controle total sobre a organização
+                                                </p>
+                                            </div>
+                                        </div>
                                     </SelectItem>
                                 </SelectContent>
                             </Select>

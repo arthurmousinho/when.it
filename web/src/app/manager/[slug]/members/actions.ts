@@ -4,6 +4,7 @@ import { HTTPError } from 'ky';
 import { sendOrganizationInvite } from '@/http/invite/send-organization-invite.http';
 import type { FormActionResponse } from '@/@types/form-action-response';
 import type { MemberRole } from '@/@types/member';
+import { revalidateTag } from 'next/cache';
 
 export type SendInviteActionData = {
     email: string;
@@ -20,6 +21,8 @@ export async function sendInviteAction(data: SendInviteActionData): Promise<Form
                 role: data.role,
             }
         )
+
+        revalidateTag('invites')
 
         return {
             message: 'Convite enviado com sucesso',

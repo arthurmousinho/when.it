@@ -1,5 +1,6 @@
 import type { MemberRole } from "@/@types/member";
 import { Badge } from "./ui/badge";
+import { ShieldUser, UserRound } from "lucide-react";
 
 export function MemberRoleBadge({ role }: { role: MemberRole }) {
     return (
@@ -10,6 +11,7 @@ export function MemberRoleBadge({ role }: { role: MemberRole }) {
                     : "secondary"
             }
         >
+            {role === "MANAGER" ? <ShieldUser /> : <UserRound />}
             {role === "MANAGER" ? "Gerente" : "Membro"}
         </Badge>
     )

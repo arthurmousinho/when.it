@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
@@ -14,6 +16,8 @@ import { InviteMemberDialog } from "../members/invite-member-dialog";
 import { InviteStatusBadge } from "./invite-status-badge";
 import { IconCard } from "@/components/icon-card";
 
+import inviteImagem from "@/assets/illustrations/invite.svg";
+
 type Props = {
     params: {
         slug: string;
@@ -23,6 +27,31 @@ type Props = {
 export default async function InvitesPage({ params: { slug } }: Props) {
 
     const { invites } = await getOrganizationInvites(slug);
+
+    if (invites.length === 0) {
+        return (
+            <div className="flex items-center justify-center w-full mt-20">
+                <main className="flex flex-row items-center gap-10">
+                    <Image
+                        src={inviteImagem}
+                        width={250}
+                        alt="No invites"
+                        className="mx-auto"
+                    />
+                    <div className="space-y-4 max-w-[500px]">
+                        <h3 className="text-xl font-semibold tracking-tight">
+                            Nenhuma convite encontrado
+                        </h3>
+                        <p className="text-muted-foreground text-base">
+                            Você ainda não enviou nenhum convite para esta organização. Convite um membro
+                            para participar
+                        </p>
+                        <InviteMemberDialog />
+                    </div>
+                </main>
+            </div>
+        )
+    }
 
     return (
         <div className="w-full space-y-4">
