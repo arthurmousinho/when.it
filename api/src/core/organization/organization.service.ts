@@ -2,8 +2,10 @@ import { ConflictException, Injectable, NotFoundException } from "@nestjs/common
 import { PrismaService } from "src/infra/database/prisma.service";
 import { UserService } from "../user/user.service";
 import { subDays, startOfDay } from 'date-fns';
-import type { CreateOrganizationDTO } from "./dtos/create-organization.dto";
 import { generateSlug } from "src/shared/generate-slug";
+import { DocumentService } from "../document/document.service";
+
+import type { CreateOrganizationDTO } from "./dtos/create-organization.dto";
 
 @Injectable()
 export class OrganizationService {
@@ -11,6 +13,7 @@ export class OrganizationService {
     constructor(
         private prismaService: PrismaService,
         private userService: UserService,
+        private documentService: DocumentService
     ) { }
 
     public async create(data: CreateOrganizationDTO & { managerId: string }) {
@@ -68,6 +71,22 @@ export class OrganizationService {
                 name,
                 description
             }
+        })
+    }
+
+    public async delete(organizationSlug: string) {
+        const org = await this.getBySlug(organizationSlug);
+
+        if (!org) {
+            throw new NotFoundException('Organização não encontrada');
+        }
+
+        await this.documentService.deleteAllOrganizationDocuments(org.slug)
+        
+        await this.prismaService.organization.delete({
+            where: {
+                id: org.id
+            },
         })
     }
 

@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { randomUUID } from "node:crypto";
 import { PrismaService } from "src/infra/database/prisma.service";
 import { StorageService } from "src/infra/storage/storage.service";
-import { OrganizationService } from "../organization/organization.service";
 import { AIModelService } from "src/infra/ai/ai-model.service";
 import { VectorStoreService } from "src/infra/ai/vector-store.service";
 import type { UploadDocumentDTO } from "./dtos/upload-document.dto";
@@ -14,17 +13,11 @@ export class DocumentService {
         private readonly prismaService: PrismaService,
         private readonly storageService: StorageService,
         private readonly vectorStoreService: VectorStoreService,
-        private readonly organizationService: OrganizationService,
         private readonly aiModelService: AIModelService
     ) { }
 
     public async upload(data: UploadDocumentDTO & { organizationSlug: string }) {
         const { name, description, file, organizationSlug } = data;
-
-        const organization = await this.organizationService.getBySlug(organizationSlug);
-        if (!organization) {
-            throw new NotFoundException('Organização não encontrada');
-        }
 
         const fileId = randomUUID();
         const fileUrl = await this.storageService.uploadFile({
@@ -41,7 +34,11 @@ export class DocumentService {
                 fileUrl,
                 fileSize: file.size,
                 fileType: 'PDF',
-                organizationId: organization.id,
+                organization: {
+                    connect: {
+                        slug: organizationSlug
+                    }
+                }
             }
         });
 
@@ -139,6 +136,16 @@ export class DocumentService {
                 id: documentId
             }
         });
+    }
+
+    public async deleteAllOrganizationDocuments(organizationSlug: string) {
+        const organizationDocuments = await this.getByOrganization(organizationSlug);
+
+        if (organizationDocuments.length === 0) {
+            return;
+        }
+
+        await Promise.all(organizationDocuments.map(doc => this.deleteDocument(doc.id)));
     }
 
 }

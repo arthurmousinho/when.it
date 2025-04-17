@@ -4,11 +4,13 @@ import { UserModule } from '../user/user.module';
 import { AuthModule } from '../auth/auth.module';
 import { OrganizationController } from './organization.controller';
 import { OrganizationService } from './organization.service';
+import { DocumentModule } from '../document/document.module';
 
 @Module({
   imports: [
     UserModule,
-    AuthModule
+    AuthModule,
+    DocumentModule
   ],
   controllers: [
     OrganizationController

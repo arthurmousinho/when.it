@@ -1,9 +1,9 @@
 import { OrganizationForm } from "@/app/orgs/(orgs)/organization-form";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getOrganization } from "@/http/organization/get-organization.http";
 import { formatDate } from "@/lib/utils";
-import { Building, Trash } from "lucide-react";
+import { deleteOrganizationAction } from "./actions";
+import { DeleteOrganizationDialog } from "./delete-organization-dialog";
 
 type Props = {
     params: {
@@ -14,6 +14,10 @@ type Props = {
 export default async function OrganizationPage({ params: { slug } }: Props) {
 
     const { organization } = await getOrganization(slug)
+
+    function handleDeleteOrganization() {
+        deleteOrganizationAction(organization.slug);
+    }
 
     return (
         <div className="space-y-4">
@@ -40,18 +44,15 @@ export default async function OrganizationPage({ params: { slug } }: Props) {
                                 Última atualização em {formatDate(organization.updatedAt)}
                             </CardDescription>
                         </div>
-                        <Button variant="outline">
-                            <Trash size={20} />
-                            Excluir Organização
-                        </Button>
+                        <DeleteOrganizationDialog organizationSlug={organization.slug} />
                     </header>
                 </CardHeader>
                 <CardContent>
-                    <OrganizationForm 
+                    <OrganizationForm
                         isUpdating={true}
                         data={{
                             organizationSlug: slug,
-                            name: organization.name, 
+                            name: organization.name,
                             description: organization.description
                         }}
                     />

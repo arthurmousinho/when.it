@@ -4,14 +4,12 @@ import { StorageService } from '../../infra/storage/storage.service';
 import { DocumentService } from './document.service';
 import { DocumentController } from './document.controller';
 import { NestjsFormDataModule } from 'nestjs-form-data';
-import { OrganizationModule } from '../organization/organization.module';
 import { AIModule } from 'src/infra/ai/ai.module';
 import { StorageModule } from 'src/infra/storage/storage.module';
 
 @Module({
   imports: [
     NestjsFormDataModule,
-    OrganizationModule,
     AIModule,
     StorageModule
   ],

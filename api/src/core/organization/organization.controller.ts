@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { CreateOrganizationDTO } from "./dtos/create-organization.dto";
 import { OrganizationService } from "./organization.service";
 import { AuthGuard } from "../auth/guards/auth.guard";
@@ -62,6 +62,14 @@ export class OrganizationController {
             organizationSlug: slug
         });
         return { organization };
+    }
+
+    @Delete(':slug')
+    @OrganizationRoles('MANAGER')
+    public async delete(
+        @Param('slug') slug: string
+    ) {
+        await this.organizationService.delete(slug);
     }
 
 }
