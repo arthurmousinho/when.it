@@ -29,6 +29,8 @@ export class AIModelService {
 
             É bem importante que use somente com base nos trechos de documentos a seguir, responda a pergunta 
             do usuário de forma clara, objetiva e profissional.
+
+            Caso precrise, a data de hoje é ${new Date()}
             
             ${chunks.join('\n')}
             
