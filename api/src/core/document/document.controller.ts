@@ -48,7 +48,7 @@ export class DocumentController {
     @Get('organization/:slug')
     @OrganizationRoles('MANAGER')
     public async getOrganizationDocuments(
-        @Param('organizationSlug') organizationSlug: string
+        @Param('slug') organizationSlug: string
     ) {
         const documents = await this.documentService.getByOrganization(organizationSlug);
         return { documents };
