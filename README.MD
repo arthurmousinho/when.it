@@ -13,7 +13,7 @@ When.it is an AI-powered platform designed to connect team members with their or
 - [Next.js](https://nextjs.org/) – React framework for building fast and scalable web applications  
 - [Tailwind CSS](https://tailwindcss.com/) – Utility-first CSS framework for rapid UI development  
 
-## Backend
+### Backend
 - [NestJS](https://nestjs.com/) – Progressive Node.js framework for building efficient and scalable server-side applications  
 - [OpenAI API](https://platform.openai.com/docs) – Integration for AI-powered responses  
 - [Pinecone](https://www.pinecone.io/) – Vector database for semantic search and retrieval  
