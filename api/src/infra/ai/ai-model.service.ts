@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import OpenAI from "openai";
 import { getChunks } from "src/shared/get-chunks";
+import OpenAI from "openai";
 
 type Prompt = {
     question: string;
@@ -24,29 +24,26 @@ export class AIModelService {
         const { question, organizationName, chunks, organizationDescription } = prompt;
 
         const finalPrompt = `
-            Você é um assistente virtual de uma organização chamada "${organizationName}, que
-            possue a seguinte descrição: "${organizationDescription}".
-
-            É bem importante que use somente com base nos trechos de documentos a seguir, responda a pergunta 
-            do usuário de forma clara, objetiva e profissional.
-
-            Caso precrise, a data de hoje é ${new Date()}
+            Você é um assistente virtual de uma organização chamada **${organizationName}**, descrita como:  
+            "${organizationDescription}".
             
+            Sua função é responder perguntas dos colaboradores com base **exclusivamente** nos trechos de documentos fornecidos abaixo.  
+            Responda de forma clara, objetiva e profissional, utilizando somente as informações presentes nesses trechos.
+            
+            Se os documentos forem inconclusivos ou não tiverem relação com a pergunta, diga ao usuário que não há informações suficientes sobre o assunto. Oriente-o a procurar um responsável da organização para obter esclarecimentos.
+            
+            A data e hora atual é: ${new Date().toLocaleString()}.
+            
+            Documentos:
             ${chunks.join('\n')}
             
-            Pergunta: ${question}
-            
-            Resposta:
+            Pergunta:
+            ${question}
         `.trim();
 
         const response = await this.openai.chat.completions.create({
             model: "gpt-3.5-turbo",
-            messages: [
-                {
-                    role: "user",
-                    content: finalPrompt,
-                },
-            ],
+            messages: [{ role: "user", content: finalPrompt, }],
             temperature: 0.4,
         });
 
