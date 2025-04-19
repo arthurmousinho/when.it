@@ -7,6 +7,7 @@ import { VectorStoreService } from "src/infra/ai/vector-store.service";
 
 import type { SendPromptMessageDTO } from "./dtos/send-message.dto";
 import type { CreateMessageDTO } from "./dtos/create-message.dto";
+import { GetOrganizationMessagesUseCase } from "./usecases/get-organization-messages.usecase";
 
 @Injectable()
 export class MessageService {
@@ -16,7 +17,7 @@ export class MessageService {
         private readonly chatService: ChatService,
         private readonly organizationService: OrganizationService,
         private readonly aiModelService: AIModelService,
-        private readonly vectorStoreService: VectorStoreService
+        private readonly vectorStoreService: VectorStoreService,
     ) { }
 
     public async createMessage(data: CreateMessageDTO) {
@@ -87,37 +88,6 @@ export class MessageService {
             responseMessage
         }
 
-    }
-
-    public async getOrganizationMessages(organizationSlug: string) {
-        return await this.prismaService.message.findMany({
-            where: {
-                chat: {
-                    organization: {
-                        slug: organizationSlug,
-                    },
-                },
-            },
-            include: {
-                chat: {
-                    select: {
-                        member: {
-                            select: {
-                                user: {
-                                    select: {
-                                        name: true,
-                                        email: true,
-                                    },
-                                },
-                            },
-                        },
-                    },
-                },
-            },
-            orderBy: {
-                createdAt: 'asc',
-            }
-        });
     }
 
     public async getChatMessages(chatId: string) {

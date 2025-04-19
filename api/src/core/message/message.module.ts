@@ -5,6 +5,7 @@ import { OrganizationModule } from "../organization/organization.module";
 import { ChatModule } from "../chat/chat.module";
 import { MessageController } from "./message.controller";
 import { AIModule } from "src/infra/ai/ai.module";
+import { GetOrganizationMessagesUseCase } from "./usecases/get-organization-messages.usecase";
 
 @Module({
     imports: [
@@ -17,7 +18,8 @@ import { AIModule } from "src/infra/ai/ai.module";
     ],
     providers: [
         PrismaService,
-        MessageService
+        MessageService,
+        GetOrganizationMessagesUseCase
     ],
     exports: [],
 })

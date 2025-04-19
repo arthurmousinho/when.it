@@ -26,12 +26,12 @@ export const api = ky.create({
             },
         ],
         afterResponse: [
-            async (_request, _options, response) => {
-                const isServerSide = typeof window !== 'undefined';
-                if (isServerSide && !response.ok) {
-                    window.location.href = '/404';
-                }
-            },
+            // async (_request, _options, response) => {
+            //     const isServerSide = typeof window !== 'undefined';
+            //     if (isServerSide && !response.ok) {
+            //         window.location.href = '/404';
+            //     }
+            // },
         ],
     },
     throwHttpErrors: true,

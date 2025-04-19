@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
     Search,
     Filter,
@@ -14,16 +14,25 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { formatDate, getInitials } from "@/lib/utils";
 import { getOrganizationMessages } from "@/http/message/get-organization-messages.http";
 import { MessageAuthorTypeBadge } from "./message-author-type-badge";
+import { Paginator } from "@/components/paginator";
 
 type Props = {
     params: {
         slug: string
-    }
+    },
+    searchParams: { [key: string]: string | undefined };
 }
 
-export default async function MessagesPage({ params: { slug } }: Props) {
+export default async function MessagesPage({ params: { slug }, searchParams }: Props) {
 
-    const { messages } = await getOrganizationMessages(slug)
+    const currentPage = parseInt((searchParams.page as string) || '1');
+    const currentLimit = parseInt((searchParams.limit as string) || '10');
+
+    const { data, meta } = await getOrganizationMessages({
+        organizationSlug: slug,
+        page: currentPage,
+        limit: currentLimit
+    });
 
     return (
         <div className="w-full space-y-4">
@@ -70,7 +79,7 @@ export default async function MessagesPage({ params: { slug } }: Props) {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {messages.map(message => (
+                            {data.map(message => (
                                 <TableRow key={message.id}>
                                     <TableCell>
                                         <div className="flex items-center gap-2">
@@ -96,7 +105,7 @@ export default async function MessagesPage({ params: { slug } }: Props) {
                                         </p>
                                     </TableCell>
                                     <TableCell>
-                                        <MessageAuthorTypeBadge 
+                                        <MessageAuthorTypeBadge
                                             authorType={message.authorType}
                                         />
                                     </TableCell>
@@ -123,6 +132,17 @@ export default async function MessagesPage({ params: { slug } }: Props) {
                                 </TableRow>
                             ))}
                         </TableBody>
+                        <TableFooter>
+                            <TableRow>
+                                <TableCell colSpan={5}>
+                                    <Paginator
+                                        showing={data.length}
+                                        meta={meta}
+                                        basePath={`/manager/${slug}/messages`}
+                                    />
+                                </TableCell>
+                            </TableRow>
+                        </TableFooter>
                     </Table>
                 </CardContent>
             </Card>
